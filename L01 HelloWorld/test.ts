@@ -1,6 +1,10 @@
 console.log("Hello World");
+let message: string = "Hello World";
 window.addEventListener("load", handLoad);
-let t: string = "Hello World";
-function handLoad(event : Event): void {
-    document.body.innerHTML = "Hello World";
+
+function handLoad(): void {
+    let divToChange01: HTMLElement = document.getElementById("ausgabe1");
+    divToChange01.textContent = message;
+  
 }
+
