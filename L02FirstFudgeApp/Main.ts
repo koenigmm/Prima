@@ -32,7 +32,17 @@ namespace L02FirstFudge {
         node02.addComponent(mtrCubeMaterial);
         cmpCube.pivot.translateY(1);
 
+        let node03: fudge.Node = new fudge.Node("circle");
+        let meshPyramid: fudge.MeshPyramid = new fudge.MeshPyramid();
+        let mtrBlue: fudge.Material = new fudge.Material("Blue",fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(0, 0, 1, 0)));
+        let mtrPyramidMaterialComonenent: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrBlue);
+        let cmpPyramid: fudge.ComponentMesh = new fudge.ComponentMesh(meshPyramid);
+        node03.addComponent(mtrPyramidMaterialComonenent);
+        node03.addComponent(cmpPyramid);
+        cmpPyramid.pivot.translateX(-1.5);
+
         node.appendChild(node02);
+        node.appendChild(node03);
         
         let viewport: fudge.Viewport = new fudge.Viewport();
         viewport.initialize("Viewport", node, camera, canvas);
