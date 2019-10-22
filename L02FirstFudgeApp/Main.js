@@ -58,4 +58,13 @@ Translate, Pivot, Matrizen, Meshes usw.
 Look at verwenden
 ausprobieren
 */
+/*
+Pong
+Eventlistener auf die Tasten (Keyboardevent)
+Objekte müssen bewegt werden
+Vorischt was man bewegen will. Die Meshes oder vielleicht doch besser die Knoten
+Backface Culling beachten
+set invervall und alle x Sekunden etwas aufrufen.
+Vorsicht mit anonymen Funktionen
+*/ 
 //# sourceMappingURL=Main.js.map
