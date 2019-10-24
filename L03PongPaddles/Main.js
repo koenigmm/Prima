@@ -14,17 +14,40 @@ var L03PongPaddles;
         viewport.initialize("Viewport", pong, camera, canvas);
         fudge.Debug.log(viewport);
         viewport.draw();
+        addEventListener("keydown", event => {
+            let childenListLeft = pong.getChildrenByName("LeftPaddle");
+            let childenListRight = pong.getChildrenByName("RightPaddle");
+            let paddleLeft = childenListLeft[0];
+            let paddleRight = childenListRight[0];
+            switch (event.key) {
+                case "w":
+                    paddleLeft.cmpTransform.local.translateY(0.1);
+                    break;
+                case "s":
+                    paddleLeft.cmpTransform.local.translateY(-0.1);
+                    break;
+                case "ArrowUp":
+                    paddleRight.cmpTransform.local.translateY(0.1);
+                    break;
+                case "ArrowDown":
+                    paddleRight.cmpTransform.local.translateY(-0.1);
+                    break;
+            }
+            viewport.draw();
+            fudge.RenderManager.update();
+        });
+        viewport.draw();
     }
     function createPong() {
         //Nodes
         let pongNode = new fudge.Node("Pong Node");
         let ball = new fudge.Node("Ball");
-        let leftPaddle = new fudge.Node("leftPaddle");
+        let leftPaddle = new fudge.Node("LeftPaddle");
         let rightPaddle = new fudge.Node("RightPaddle");
         // Left Paddle Compnent und Mesh und Color
         let meshQuad = new fudge.MeshQuad();
         let cmpMesh = new fudge.ComponentMesh(meshQuad);
-        let mtrSolidWhite = new fudge.Material("Solid White", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(0.2, 1, 1, 1)));
+        let mtrSolidWhite = new fudge.Material("Solid White", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(1, 1, 1, 1)));
         let mtrComponent = new fudge.ComponentMaterial(mtrSolidWhite);
         //Right Paddle Component und Mesh und Color
         let meshQuad02 = new fudge.MeshQuad();
@@ -52,6 +75,7 @@ var L03PongPaddles;
         //let cmpTransform: fudge.ComponentTransform = rightPaddle.getComponent(fudge.ComponentTransform) //cmpTransform geht auch
         leftPaddle.cmpTransform.local.translateX(1.3);
         rightPaddle.cmpTransform.local.translateX(-1.3);
+        // TODO Nebeneffekte möglich Besser das Mesh Skalieren
         ball.cmpTransform.local.scaleY(0.2);
         ball.cmpTransform.local.scaleX(0.2);
         ball.cmpTransform.local.scaleZ(0.2);
@@ -68,5 +92,9 @@ Vorischt was man bewegen will. Die Meshes oder vielleicht doch besser die Knoten
 Backface Culling beachten
 set invervall und alle x Sekunden etwas aufrufen.
 Vorsicht mit anonymen Funktionen
+
+Hausaufgaben
+Paddles mit Tasen rauf und runter bewgen.
+Knoten Transformation benuten
 */ 
 //# sourceMappingURL=Main.js.map

@@ -1,5 +1,6 @@
 namespace L03PongPaddles {
     import fudge = FudgeCore;
+
     window.addEventListener("load", hndload);
     function hndload(_event: Event): void {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
@@ -14,19 +15,46 @@ namespace L03PongPaddles {
         viewport.initialize("Viewport", pong, camera, canvas);
         fudge.Debug.log(viewport);
         viewport.draw();
+
+        addEventListener("keydown", event => {
+            let childenListLeft: fudge.Node[] = pong.getChildrenByName("LeftPaddle");
+            let childenListRight: fudge.Node[] = pong.getChildrenByName("RightPaddle");
+            let paddleLeft: fudge.Node = childenListLeft[0];
+            let paddleRight: fudge.Node = childenListRight[0];
+
+            switch (event.key) {
+                case "w":
+                    paddleLeft.cmpTransform.local.translateY(0.1);
+                    break;
+                case "s":
+                    paddleLeft.cmpTransform.local.translateY(-0.1);
+                    break;
+                case "ArrowUp":
+                    paddleRight.cmpTransform.local.translateY(0.1);
+                    break;
+                case "ArrowDown":
+                    paddleRight.cmpTransform.local.translateY(-0.1);
+                    break;
+            }
+            viewport.draw();
+            fudge.RenderManager.update();
+            
+        })
+        viewport.draw();
+        
     }
 
     function createPong(): fudge.Node {
         //Nodes
         let pongNode: fudge.Node = new fudge.Node("Pong Node");
         let ball: fudge.Node = new fudge.Node("Ball");
-        let leftPaddle: fudge.Node = new fudge.Node("leftPaddle");
+        let leftPaddle: fudge.Node = new fudge.Node("LeftPaddle");
         let rightPaddle: fudge.Node = new fudge.Node("RightPaddle");
 
         // Left Paddle Compnent und Mesh und Color
         let meshQuad: fudge.MeshQuad = new fudge.MeshQuad();
         let cmpMesh: fudge.ComponentMesh = new fudge.ComponentMesh(meshQuad);
-        let mtrSolidWhite: fudge.Material = new fudge.Material("Solid White", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(0.2, 1, 1, 1)));
+        let mtrSolidWhite: fudge.Material = new fudge.Material("Solid White", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(1, 1, 1, 1)));
         let mtrComponent: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrSolidWhite);
 
         //Right Paddle Component und Mesh und Color
@@ -69,10 +97,9 @@ namespace L03PongPaddles {
         leftPaddle.cmpTransform.local.scaleX(0.15);
         rightPaddle.cmpTransform.local.scaleX(0.15);
 
-
         return pongNode;
-
     }
+
 }
 
 
@@ -86,6 +113,6 @@ set invervall und alle x Sekunden etwas aufrufen.
 Vorsicht mit anonymen Funktionen
 
 Hausaufgaben
-Paddles mit Tasen rauf und runter bewgen. 
+Paddles mit Tasen rauf und runter bewgen.
 Knoten Transformation benuten
 */
