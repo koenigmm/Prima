@@ -36,8 +36,9 @@ namespace L03PongPaddles {
                     paddleLeft.cmpTransform.local.translateY(-0.1);
                     break;
             }
-            viewport.draw();
             fudge.RenderManager.update();
+            viewport.draw();
+            
             
         })
         viewport.draw();
