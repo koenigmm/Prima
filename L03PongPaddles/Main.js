@@ -21,16 +21,16 @@ var L03PongPaddles;
             let paddleRight = childenListRight[0];
             switch (event.key) {
                 case "w":
-                    paddleLeft.cmpTransform.local.translateY(0.1);
-                    break;
-                case "s":
-                    paddleLeft.cmpTransform.local.translateY(-0.1);
-                    break;
-                case "ArrowUp":
                     paddleRight.cmpTransform.local.translateY(0.1);
                     break;
-                case "ArrowDown":
+                case "s":
                     paddleRight.cmpTransform.local.translateY(-0.1);
+                    break;
+                case "ArrowUp":
+                    paddleLeft.cmpTransform.local.translateY(0.1);
+                    break;
+                case "ArrowDown":
+                    paddleLeft.cmpTransform.local.translateY(-0.1);
                     break;
             }
             viewport.draw();
