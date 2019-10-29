@@ -1,6 +1,6 @@
 "use strict";
-var L05PongReflection;
-(function (L05PongReflection) {
+var L03PongPaddles;
+(function (L03PongPaddles) {
     var fudge = FudgeCore;
     window.addEventListener("load", hndload);
     let keysPressed = {};
@@ -118,7 +118,7 @@ var L05PongReflection;
         }
         */
     }
-})(L05PongReflection || (L05PongReflection = {}));
+})(L03PongPaddles || (L03PongPaddles = {}));
 /*
 Pong
 Eventlistener auf die Tasten (Keyboardevent)
