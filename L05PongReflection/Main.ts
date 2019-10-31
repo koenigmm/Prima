@@ -18,6 +18,7 @@ namespace L05PongReflections {
     let wallLeft: fudge.Node = new fudge.Node("Wall Left");
     let wallTop: fudge.Node = new fudge.Node("Wall Top");
     let wallBottom: fudge.Node = new fudge.Node("Wall Bottom");
+    
     //Richtung und Geschwindigkeit
     let ballSpeed: fudge.Vector3 = new fudge.Vector3(randomNumberBall_1,randomNumberBall_2);
 
@@ -98,6 +99,7 @@ namespace L05PongReflections {
         paddleLeft.addComponent(cmpMesh);
         paddleLeft.addComponent(new fudge.ComponentTransform);
         pongNode.appendChild(paddleLeft);
+;
 
         //Right Paddle Node zusammensetzten und zu Pong Node hinzufügen
         paddleRight.addComponent(quad02MtrComponent);
