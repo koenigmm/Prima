@@ -1,5 +1,5 @@
 
-namespace L05PongReflection {
+namespace L03PongPaddles {
 
     interface KeysPressed {
         [code: string]: boolean

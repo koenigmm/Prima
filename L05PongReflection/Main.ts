@@ -1,5 +1,5 @@
 
-namespace L03PongPaddles {
+namespace L05PongReflections {
 
     interface KeysPressed {
         [code: string]: boolean
@@ -14,8 +14,13 @@ namespace L03PongPaddles {
     let ball: fudge.Node = new fudge.Node("Ball");
     let randomNumberBall_1: number = (Math.random() * 2 -1) / 15;
     let randomNumberBall_2: number = (Math.random() * 2 -1) / 15;
+    let wallRight: fudge.Node = new fudge.Node("wall Right");
+    let wallLeft: fudge.Node = new fudge.Node("Wall Left");
+    let wallTop: fudge.Node = new fudge.Node("Wall Top");
+    let wallBottom: fudge.Node = new fudge.Node("Wall Bottom");
     //Richtung und Geschwindigkeit
     let ballSpeed: fudge.Vector3 = new fudge.Vector3(randomNumberBall_1,randomNumberBall_2);
+
 
     //Fude Keyboad Codes verwenden
     function hndlKeyDown(_event: KeyboardEvent): void {
@@ -68,6 +73,26 @@ namespace L03PongPaddles {
         let cmpBall: fudge.ComponentMesh = new fudge.ComponentMesh(meshBall);
         let BallMtrComponent: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrSolidWhite);
 
+        //Wall Left 
+        let meshWall_left: fudge.MeshQuad = new fudge.MeshQuad();
+        let cmpWall_left: fudge.ComponentMesh = new fudge.ComponentMesh(meshWall_left);
+        let wallMTRComponent_left: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrSolidWhite);
+        
+        //Wall Right
+        let meshWall_right: fudge.MeshQuad = new fudge.MeshQuad();
+        let cmpWall_right: fudge.ComponentMesh = new fudge.ComponentMesh(meshWall_right);
+        let wallMTRComponent_right: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrSolidWhite);
+        
+        //Wall Top
+        let meshWall_top: fudge.MeshQuad = new fudge.MeshQuad();
+        let cmpWall_top: fudge.ComponentMesh = new fudge.ComponentMesh(meshWall_top);
+        let wallMTRComponent_top: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrSolidWhite);
+
+        //Wall Bottom
+        let meshWall_bottom: fudge.MeshQuad = new fudge.MeshQuad();
+        let cmpWall_bottom: fudge.ComponentMesh = new fudge.ComponentMesh(meshWall_bottom);
+        let wallMTRComponent_bottom: fudge.ComponentMaterial = new fudge.ComponentMaterial(mtrSolidWhite);
+
         //Left Paddle Node zusamensetzten und zu Pong Node hinzufügen
         paddleLeft.addComponent(mtrComponent);
         paddleLeft.addComponent(cmpMesh);
@@ -86,9 +111,17 @@ namespace L03PongPaddles {
         ball.addComponent(new fudge.ComponentTransform);
         pongNode.appendChild(ball);
 
+        //Wall Left
+        wallLeft.addComponent(cmpWall_left);
+        wallLeft.addComponent(wallMTRComponent_left);
+        wallLeft.addComponent(new fudge.ComponentTransform);
+        // Array oder Fudge Node verwenden
+        pongNode.appendChild(wallLeft);
+
         //let cmpTransform: fudge.ComponentTransform = paddleRight.getComponent(fudge.ComponentTransform) //cmpTransform geht auch
         paddleLeft.cmpTransform.local.translateX(1.3);
         paddleRight.cmpTransform.local.translateX(-1.3);
+
 
         // TODO Nebeneffekte möglich Besser das Mesh Skalieren
         ball.cmpTransform.local.scaleY(0.15);
@@ -104,6 +137,8 @@ namespace L03PongPaddles {
     function update(_event: Event): void {
         //fudge.Debug.log(keysPressed);
         moveBall();
+        //let sclRec: fudge.Vector3 = paddleRight.getComponent(fudge.ComponentMesh).pivort.scaling so ähnlich 
+        console.log(detectHit(ball.cmpTransform.local.translation, paddleRight.cmpTransform.local))
 
         if (keysPressed["w"]) {
             paddleRight.cmpTransform.local.translateY(0.025);
@@ -124,6 +159,23 @@ namespace L03PongPaddles {
         fudge.RenderManager.update();
         viewport.draw();
 
+    }
+    function detectHit(_position: fudge.Vector3, _mtxBox: fudge.Matrix4x4, _sclRect: fudge.Vector3): boolean {
+        // Geht auch Komonentenweise mit x und y das sind wahrscheinlich vier Berechnungen
+        let poBox: fudge.Vector3 = _mtxBox.translation;
+        let sclBox: fudge.Vector3 = _mtxBox.scaling;
+        sclBox.z = 0;
+        sclBox.x *= -1;
+        _sclRect.scale(0.5);
+        let topLeft: fudge.Vector3 = fudge.Vector3.SUM(poBox, sclBox);
+        let bottomRight: fudge.Vector3 = fudge.Vector3.DIFFERENCE(poBox, sclBox);
+
+        if(_position.x > topLeft.x && _position.x < bottomRight.x) {
+            if (_position.y < topLeft.y && _position.y > bottomRight.y) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function moveBall(): void {

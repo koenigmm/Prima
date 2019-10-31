@@ -1,6 +1,6 @@
 "use strict";
-var L03PongPaddles;
-(function (L03PongPaddles) {
+var L05PongReflections;
+(function (L05PongReflections) {
     var fudge = FudgeCore;
     window.addEventListener("load", hndload);
     let keysPressed = {};
@@ -10,6 +10,10 @@ var L03PongPaddles;
     let ball = new fudge.Node("Ball");
     let randomNumberBall_1 = (Math.random() * 2 - 1) / 15;
     let randomNumberBall_2 = (Math.random() * 2 - 1) / 15;
+    let wallRight = new fudge.Node("wall Right");
+    let wallLeft = new fudge.Node("Wall Left");
+    let wallTop = new fudge.Node("Wall Top");
+    let wallBottom = new fudge.Node("Wall Bottom");
     //Richtung und Geschwindigkeit
     let ballSpeed = new fudge.Vector3(randomNumberBall_1, randomNumberBall_2);
     //Fude Keyboad Codes verwenden
@@ -54,6 +58,22 @@ var L03PongPaddles;
         let meshBall = new fudge.MeshQuad();
         let cmpBall = new fudge.ComponentMesh(meshBall);
         let BallMtrComponent = new fudge.ComponentMaterial(mtrSolidWhite);
+        //Wall Left 
+        let meshWall_left = new fudge.MeshQuad();
+        let cmpWall_left = new fudge.ComponentMesh(meshWall_left);
+        let wallMTRComponent_left = new fudge.ComponentMaterial(mtrSolidWhite);
+        //Wall Right
+        let meshWall_right = new fudge.MeshQuad();
+        let cmpWall_right = new fudge.ComponentMesh(meshWall_right);
+        let wallMTRComponent_right = new fudge.ComponentMaterial(mtrSolidWhite);
+        //Wall Top
+        let meshWall_top = new fudge.MeshQuad();
+        let cmpWall_top = new fudge.ComponentMesh(meshWall_top);
+        let wallMTRComponent_top = new fudge.ComponentMaterial(mtrSolidWhite);
+        //Wall Bottom
+        let meshWall_bottom = new fudge.MeshQuad();
+        let cmpWall_bottom = new fudge.ComponentMesh(meshWall_bottom);
+        let wallMTRComponent_bottom = new fudge.ComponentMaterial(mtrSolidWhite);
         //Left Paddle Node zusamensetzten und zu Pong Node hinzufügen
         paddleLeft.addComponent(mtrComponent);
         paddleLeft.addComponent(cmpMesh);
@@ -69,6 +89,12 @@ var L03PongPaddles;
         ball.addComponent(BallMtrComponent);
         ball.addComponent(new fudge.ComponentTransform);
         pongNode.appendChild(ball);
+        //Wall Left
+        wallLeft.addComponent(cmpWall_left);
+        wallLeft.addComponent(wallMTRComponent_left);
+        wallLeft.addComponent(new fudge.ComponentTransform);
+        // Array oder Fudge Node verwenden
+        pongNode.appendChild(wallLeft);
         //let cmpTransform: fudge.ComponentTransform = paddleRight.getComponent(fudge.ComponentTransform) //cmpTransform geht auch
         paddleLeft.cmpTransform.local.translateX(1.3);
         paddleRight.cmpTransform.local.translateX(-1.3);
@@ -83,6 +109,8 @@ var L03PongPaddles;
     function update(_event) {
         //fudge.Debug.log(keysPressed);
         moveBall();
+        //let sclRec: fudge.Vector3 = paddleRight.getComponent(fudge.ComponentMesh).pivort.scaling so ähnlich 
+        console.log(detectHit(ball.cmpTransform.local.translation, paddleRight.cmpTransform.local));
         if (keysPressed["w"]) {
             paddleRight.cmpTransform.local.translateY(0.025);
         }
@@ -97,6 +125,22 @@ var L03PongPaddles;
         }
         fudge.RenderManager.update();
         viewport.draw();
+    }
+    function detectHit(_position, _mtxBox, _sclRect) {
+        // Geht auch Komonentenweise mit x und y das sind wahrscheinlich vier Berechnungen
+        let poBox = _mtxBox.translation;
+        let sclBox = _mtxBox.scaling;
+        sclBox.z = 0;
+        sclBox.x *= -1;
+        _sclRect.scale(0.5);
+        let topLeft = fudge.Vector3.SUM(poBox, sclBox);
+        let bottomRight = fudge.Vector3.DIFFERENCE(poBox, sclBox);
+        if (_position.x > topLeft.x && _position.x < bottomRight.x) {
+            if (_position.y < topLeft.y && _position.y > bottomRight.y) {
+                return true;
+            }
+        }
+        return false;
     }
     function moveBall() {
         ball.cmpTransform.local.translateX(ballSpeed.x);
@@ -118,7 +162,7 @@ var L03PongPaddles;
         }
         */
     }
-})(L03PongPaddles || (L03PongPaddles = {}));
+})(L05PongReflections || (L05PongReflections = {}));
 /*
 Pong
 Eventlistener auf die Tasten (Keyboardevent)
