@@ -8,12 +8,14 @@ var L05PongReflections;
     let paddleRight;
     let viewport = new fudge.Viewport();
     let ball = new fudge.Node("Ball");
-    let randomNumberBall_1 = (Math.random() * 2 - 1) / 15;
-    let randomNumberBall_2 = (Math.random() * 2 - 1) / 15;
-    let wallRight = new fudge.Node("wall Right");
-    let wallLeft = new fudge.Node("Wall Left");
-    let wallTop = new fudge.Node("Wall Top");
-    let wallBottom = new fudge.Node("Wall Bottom");
+    let randomNumberBall_1 = (Math.random() * 2 - 1) / 200;
+    let randomNumberBall_2 = (Math.random() * 2 - 1) / 200;
+    let wallTop = new fudge.Node("WallTop");
+    let WallBottom = new fudge.Node("WallBottom");
+    let wallLeft = new fudge.Node("WallLeft");
+    let wallRight = new fudge.Node("WallRight");
+    let walls = [wallLeft, wallRight, wallTop, WallBottom];
+    let pong;
     //Richtung und Geschwindigkeit
     let ballSpeed = new fudge.Vector3(randomNumberBall_1, randomNumberBall_2);
     //Fude Keyboad Codes verwenden
@@ -28,7 +30,7 @@ var L05PongReflections;
         const canvas = document.querySelector("canvas");
         fudge.RenderManager.initialize();
         console.log(canvas);
-        let pong = createPong();
+        pong = createPong();
         let camera = new fudge.ComponentCamera();
         camera.pivot.translateZ(3);
         viewport.initialize("Viewport", pong, camera, canvas);
@@ -37,6 +39,8 @@ var L05PongReflections;
         addEventListener("keydown", hndlKeyDown);
         addEventListener("keyup", hndlKeyUp);
         viewport.draw();
+        //Debug evtl löschen
+        fudge.Debug.log(viewport.getCanvasRectangle);
         fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         fudge.Loop.start();
     }
@@ -49,6 +53,7 @@ var L05PongReflections;
         let meshQuad = new fudge.MeshQuad();
         let cmpMesh = new fudge.ComponentMesh(meshQuad);
         let mtrSolidWhite = new fudge.Material("Solid White", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(1, 1, 1, 1)));
+        let mtrBlue = new fudge.Material("red", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(0, 0, 1, 1)));
         let mtrComponent = new fudge.ComponentMaterial(mtrSolidWhite);
         //Right Paddle Component und Mesh und Color
         let meshQuad02 = new fudge.MeshQuad();
@@ -58,27 +63,12 @@ var L05PongReflections;
         let meshBall = new fudge.MeshQuad();
         let cmpBall = new fudge.ComponentMesh(meshBall);
         let BallMtrComponent = new fudge.ComponentMaterial(mtrSolidWhite);
-        //Wall Left 
-        let meshWall_left = new fudge.MeshQuad();
-        let cmpWall_left = new fudge.ComponentMesh(meshWall_left);
-        let wallMTRComponent_left = new fudge.ComponentMaterial(mtrSolidWhite);
-        //Wall Right
-        let meshWall_right = new fudge.MeshQuad();
-        let cmpWall_right = new fudge.ComponentMesh(meshWall_right);
-        let wallMTRComponent_right = new fudge.ComponentMaterial(mtrSolidWhite);
-        //Wall Top
-        let meshWall_top = new fudge.MeshQuad();
-        let cmpWall_top = new fudge.ComponentMesh(meshWall_top);
-        let wallMTRComponent_top = new fudge.ComponentMaterial(mtrSolidWhite);
-        //Wall Bottom
-        let meshWall_bottom = new fudge.MeshQuad();
-        let cmpWall_bottom = new fudge.ComponentMesh(meshWall_bottom);
-        let wallMTRComponent_bottom = new fudge.ComponentMaterial(mtrSolidWhite);
         //Left Paddle Node zusamensetzten und zu Pong Node hinzufügen
         paddleLeft.addComponent(mtrComponent);
         paddleLeft.addComponent(cmpMesh);
         paddleLeft.addComponent(new fudge.ComponentTransform);
         pongNode.appendChild(paddleLeft);
+        ;
         //Right Paddle Node zusammensetzten und zu Pong Node hinzufügen
         paddleRight.addComponent(quad02MtrComponent);
         paddleRight.addComponent(cmpQuad02);
@@ -88,13 +78,8 @@ var L05PongReflections;
         ball.addComponent(cmpBall);
         ball.addComponent(BallMtrComponent);
         ball.addComponent(new fudge.ComponentTransform);
+        console.log(ball.name);
         pongNode.appendChild(ball);
-        //Wall Left
-        wallLeft.addComponent(cmpWall_left);
-        wallLeft.addComponent(wallMTRComponent_left);
-        wallLeft.addComponent(new fudge.ComponentTransform);
-        // Array oder Fudge Node verwenden
-        pongNode.appendChild(wallLeft);
         //let cmpTransform: fudge.ComponentTransform = paddleRight.getComponent(fudge.ComponentTransform) //cmpTransform geht auch
         paddleLeft.cmpTransform.local.translateX(1.3);
         paddleRight.cmpTransform.local.translateX(-1.3);
@@ -104,13 +89,32 @@ var L05PongReflections;
         ball.cmpTransform.local.scaleZ(0.15);
         paddleLeft.cmpTransform.local.scaleX(0.15);
         paddleRight.cmpTransform.local.scaleX(0.15);
+        // Walls
+        for (let i of walls) {
+            i.addComponent(new fudge.ComponentMesh(meshQuad));
+            i.addComponent(new fudge.ComponentTransform());
+            i.addComponent(new fudge.ComponentMaterial(mtrBlue));
+            pongNode.appendChild(i);
+        }
+        //Wall translate und scale
+        wallLeft.cmpTransform.local.translateX(-1.45);
+        wallLeft.getComponent(fudge.ComponentMesh).pivot.scaleX(0.1);
+        wallLeft.getComponent(fudge.ComponentMesh).pivot.scaleY(2.2);
+        wallRight.cmpTransform.local.translateX(1.45);
+        wallRight.getComponent(fudge.ComponentMesh).pivot.scaleX(0.1);
+        wallRight.getComponent(fudge.ComponentMesh).pivot.scaleY(2.2);
+        wallTop.cmpTransform.local.translateY(1.1);
+        wallTop.getComponent(fudge.ComponentMesh).pivot.scaleY(0.1);
+        wallTop.getComponent(fudge.ComponentMesh).pivot.scaleX(2.8);
+        WallBottom.cmpTransform.local.translateY(-1.1);
+        WallBottom.getComponent(fudge.ComponentMesh).pivot.scaleY(0.1);
+        WallBottom.getComponent(fudge.ComponentMesh).pivot.scaleX(2.8);
         return pongNode;
     }
     function update(_event) {
         //fudge.Debug.log(keysPressed);
-        moveBall();
+        //moveBall();
         //let sclRec: fudge.Vector3 = paddleRight.getComponent(fudge.ComponentMesh).pivort.scaling so ähnlich 
-        console.log(detectHit(ball.cmpTransform.local.translation, paddleRight.cmpTransform.local));
         if (keysPressed["w"]) {
             paddleRight.cmpTransform.local.translateY(0.025);
         }
@@ -123,44 +127,58 @@ var L05PongReflections;
         if (keysPressed["ArrowDown"]) {
             paddleLeft.cmpTransform.local.translateY(-0.025);
         }
+        let hit = false;
+        for (let node of pong.getChildren()) {
+            if (node.name == "Ball") {
+                let sclRect = node.getComponent(fudge.ComponentMesh).pivot.scaling.copy;
+                let posRect = node.cmpTransform.local.translation.copy;
+                hit = hit || detectHit(ball.cmpTransform.local.translation, posRect, sclRect);
+                console.log(hit);
+            }
+            if (hit) {
+                processHit(node);
+                hit = false;
+            }
+        }
         fudge.RenderManager.update();
         viewport.draw();
     }
-    function detectHit(_position, _mtxBox, _sclRect) {
-        // Geht auch Komonentenweise mit x und y das sind wahrscheinlich vier Berechnungen
-        let poBox = _mtxBox.translation;
-        let sclBox = _mtxBox.scaling;
-        sclBox.z = 0;
-        sclBox.x *= -1;
-        _sclRect.scale(0.5);
-        let topLeft = fudge.Vector3.SUM(poBox, sclBox);
-        let bottomRight = fudge.Vector3.DIFFERENCE(poBox, sclBox);
-        if (_position.x > topLeft.x && _position.x < bottomRight.x) {
-            if (_position.y < topLeft.y && _position.y > bottomRight.y) {
-                return true;
-            }
+    function detectHit(_position, _posRect, _sclRect) {
+        // sclRect und posrect in die Funktion und als Pramaeter den Node übergeben
+        let rectangle = new fudge.Rectangle(_position.x, _posRect.y, _sclRect.x, _sclRect.y, fudge.ORIGIN2D.CENTER);
+        return rectangle.isInside(_position.toVector2());
+    }
+    function processHit(_node) {
+        switch (_node.name) {
+            case "WallTop":
+            case "WallBottom":
+                ballSpeed.y -= 1;
+                break;
+            case "WallLeft":
+                ballSpeed.x -= 1;
+            case "WallRight":
+                break;
+            case "paddleLeft":
+            case "paddleRight ":
+                ballSpeed.x *= -1;
+                break;
+            default:
+                console.log("Unkown + " + _node.name);
         }
-        return false;
     }
     function moveBall() {
         ball.cmpTransform.local.translateX(ballSpeed.x);
         ball.cmpTransform.local.translateY(ballSpeed.y);
-        /*
-        if (randomNumberBall_1 <= 0.25 && randomNumberBall_1 <0.5) {
-            ball.cmpTransform.local.translateY(speedBall);
-        }
-        if (randomNumberBall_1 >= 0.25 && randomNumberBall_1 < 0.5) {
-           ball.cmpTransform.local.translateY(-speedBall)
-        }
-
-        if (randomNumberBall_1 >= 0.5 && randomNumberBall_1 < 0.75) {
-           ball.cmpTransform.local.translateX(speedBall);
-        }
-
-        if (randomNumberBall_1 >= 0.75 && randomNumberBall_1 < 1) {
-            ball.cmpTransform.local.translateX(-speedBall);
-        }
-        */
+    }
+    //TODO Benutzen wichtig
+    function createNode(name, _mesh, _material, _translation, _scaling) {
+        let node = new fudge.Node(name);
+        node.addComponent(new fudge.ComponentTransform);
+        node.addComponent(new fudge.ComponentMaterial(_material));
+        node.addComponent(new fudge.ComponentMesh(_mesh));
+        node.cmpTransform.local.translate(_translation.toVector3());
+        node.getComponent(fudge.ComponentMesh).pivot.scale(_scaling.toVector3());
+        return node;
     }
 })(L05PongReflections || (L05PongReflections = {}));
 /*
@@ -185,5 +203,17 @@ Aufgabe für Dienstag
 Ball bewegen, so dass er an allen vier Wänden abprall. Starten in zufällige Richtung und Geschwindigkeit
 Vector3 verwenden für die Geschwindigkeit soll am Anfang zufällig bestimmt werden
 Ränder definieren
+
+TODO
+Umsetzung der neuen Funktion, am besten mit einem Array
+Am besten die Gelegenheit nutzen, un die Kamera weiter herauszoomen In der Vorlesung auf 50
+pong.appendchild(createNode(paramter eingeben Vektoren mit new erzeugen))
+
+Bis Dienstag Hausaufgabe
+Winkeländerung abbhängig Keypress
+Kollisionstreffpunkt
+oder beides
+Punktezähler auf der Website mithilfe eines HTMLElements bspw. h1 über Canvas oder darunter
+- Möglichkeit Nummer 3: Mit Fudge Grafische Anzeige oder als Canvas Text
 */ 
 //# sourceMappingURL=Main.js.map
