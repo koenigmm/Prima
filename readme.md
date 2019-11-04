@@ -8,4 +8,4 @@
 
 [L03PongPaddles](https://www.koenigmarius.de/Prima/L03PongPaddles/Main.html)
 
-[L03PongPaddles](https://www.koenigmarius.de/Prima/L05PongReflection/Main.html)
+[L05PongReflection](https://www.koenigmarius.de/Prima/L05PongReflection/Main.html)
