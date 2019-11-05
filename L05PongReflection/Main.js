@@ -8,16 +8,20 @@ var L05PongReflections;
     let paddleRight;
     let viewport = new fudge.Viewport();
     let ball = new fudge.Node("Ball");
-    let randomNumberBall_1 = (Math.random() * 2 - 1) / 200;
-    let randomNumberBall_2 = (Math.random() * 2 - 1) / 200;
+    let mtxBall;
+    let randomNumberBall_1 = (Math.random() * 2 - 1) / 2;
+    let randomNumberBall_2 = (Math.random() * 2 - 1) / 2;
     let wallTop = new fudge.Node("WallTop");
     let WallBottom = new fudge.Node("WallBottom");
     let wallLeft = new fudge.Node("WallLeft");
     let wallRight = new fudge.Node("WallRight");
     let walls = [wallLeft, wallRight, wallTop, WallBottom];
     let pong;
+    let scorePlayer1 = 0;
+    let scorePlayer2 = 0;
     //Richtung und Geschwindigkeit
     let ballSpeed = new fudge.Vector3(randomNumberBall_1, randomNumberBall_2);
+    //let ballSpeed: fudge.Vector3 = new fudge.Vector3(0.1 , -0.0, 0.0);
     //Fude Keyboad Codes verwenden
     function hndlKeyDown(_event) {
         keysPressed[_event.key] = true;
@@ -32,7 +36,8 @@ var L05PongReflections;
         console.log(canvas);
         pong = createPong();
         let camera = new fudge.ComponentCamera();
-        camera.pivot.translateZ(3);
+        camera.pivot.translateZ(40);
+        mtxBall = ball.cmpTransform.local;
         viewport.initialize("Viewport", pong, camera, canvas);
         fudge.Debug.log(viewport);
         viewport.draw();
@@ -47,8 +52,8 @@ var L05PongReflections;
     function createPong() {
         //Nodes
         let pongNode = new fudge.Node("Pong Node");
-        paddleLeft = new fudge.Node("paddleLeft");
-        paddleRight = new fudge.Node("paddleRight");
+        paddleLeft = new fudge.Node("PaddleRight");
+        paddleRight = new fudge.Node("PaddleLeft");
         // Left Paddle Compnent und Mesh und Color
         let meshQuad = new fudge.MeshQuad();
         let cmpMesh = new fudge.ComponentMesh(meshQuad);
@@ -81,14 +86,16 @@ var L05PongReflections;
         console.log(ball.name);
         pongNode.appendChild(ball);
         //let cmpTransform: fudge.ComponentTransform = paddleRight.getComponent(fudge.ComponentTransform) //cmpTransform geht auch
-        paddleLeft.cmpTransform.local.translateX(1.3);
-        paddleRight.cmpTransform.local.translateX(-1.3);
+        paddleLeft.cmpTransform.local.translateX(12);
+        paddleRight.cmpTransform.local.translateX(-12);
         // TODO Nebeneffekte möglich Besser das Mesh Skalieren
-        ball.cmpTransform.local.scaleY(0.15);
-        ball.cmpTransform.local.scaleX(0.15);
-        ball.cmpTransform.local.scaleZ(0.15);
-        paddleLeft.cmpTransform.local.scaleX(0.15);
-        paddleRight.cmpTransform.local.scaleX(0.15);
+        ball.cmpTransform.local.scaleY(0.75);
+        ball.cmpTransform.local.scaleX(0.75);
+        ball.cmpTransform.local.scaleZ(0.75);
+        paddleLeft.cmpTransform.local.scaleX(1);
+        paddleLeft.cmpTransform.local.scaleY(8);
+        paddleRight.cmpTransform.local.scaleY(8);
+        paddleRight.cmpTransform.local.scaleX(1);
         // Walls
         for (let i of walls) {
             i.addComponent(new fudge.ComponentMesh(meshQuad));
@@ -97,89 +104,110 @@ var L05PongReflections;
             pongNode.appendChild(i);
         }
         //Wall translate und scale
-        wallLeft.cmpTransform.local.translateX(-1.45);
-        wallLeft.getComponent(fudge.ComponentMesh).pivot.scaleX(0.1);
-        wallLeft.getComponent(fudge.ComponentMesh).pivot.scaleY(2.2);
-        wallRight.cmpTransform.local.translateX(1.45);
-        wallRight.getComponent(fudge.ComponentMesh).pivot.scaleX(0.1);
-        wallRight.getComponent(fudge.ComponentMesh).pivot.scaleY(2.2);
-        wallTop.cmpTransform.local.translateY(1.1);
-        wallTop.getComponent(fudge.ComponentMesh).pivot.scaleY(0.1);
-        wallTop.getComponent(fudge.ComponentMesh).pivot.scaleX(2.8);
-        WallBottom.cmpTransform.local.translateY(-1.1);
-        WallBottom.getComponent(fudge.ComponentMesh).pivot.scaleY(0.1);
-        WallBottom.getComponent(fudge.ComponentMesh).pivot.scaleX(2.8);
+        wallLeft.cmpTransform.local.translateX(-16);
+        wallLeft.getComponent(fudge.ComponentMesh).pivot.scaleX(0.5);
+        wallLeft.getComponent(fudge.ComponentMesh).pivot.scaleY(20);
+        wallRight.cmpTransform.local.translateX(16);
+        wallRight.getComponent(fudge.ComponentMesh).pivot.scaleX(0.5);
+        wallRight.getComponent(fudge.ComponentMesh).pivot.scaleY(20);
+        wallTop.cmpTransform.local.translateY(10.0);
+        wallTop.getComponent(fudge.ComponentMesh).pivot.scaleY(0.5);
+        wallTop.getComponent(fudge.ComponentMesh).pivot.scaleX(33);
+        WallBottom.cmpTransform.local.translateY(-10.0);
+        WallBottom.getComponent(fudge.ComponentMesh).pivot.scaleY(0.5);
+        WallBottom.getComponent(fudge.ComponentMesh).pivot.scaleX(33);
         return pongNode;
     }
     function update(_event) {
         //fudge.Debug.log(keysPressed);
-        //moveBall();
         //let sclRec: fudge.Vector3 = paddleRight.getComponent(fudge.ComponentMesh).pivort.scaling so ähnlich 
         if (keysPressed["w"]) {
-            paddleRight.cmpTransform.local.translateY(0.025);
+            paddleRight.cmpTransform.local.translateY(0.25);
         }
         if (keysPressed["s"]) {
-            paddleRight.cmpTransform.local.translateY(-0.025);
+            paddleRight.cmpTransform.local.translateY(-0.25);
         }
         if (keysPressed["ArrowUp"]) {
-            paddleLeft.cmpTransform.local.translateY(0.025);
+            paddleLeft.cmpTransform.local.translateY(0.2);
         }
         if (keysPressed["ArrowDown"]) {
-            paddleLeft.cmpTransform.local.translateY(-0.025);
+            paddleLeft.cmpTransform.local.translateY(-0.2);
         }
         let hit = false;
         for (let node of pong.getChildren()) {
             if (node.name == "Ball") {
-                let sclRect = node.getComponent(fudge.ComponentMesh).pivot.scaling.copy;
-                let posRect = node.cmpTransform.local.translation.copy;
-                hit = hit || detectHit(ball.cmpTransform.local.translation, posRect, sclRect);
-                console.log(hit);
+                continue;
             }
+            hit = detectHit(mtxBall.translation, node);
+            //fudge.Debug.log(hit);
             if (hit) {
                 processHit(node);
-                hit = false;
+                break;
             }
         }
+        moveBall();
+        //console.log(scorePlayer1, +" " + scorePlayer2)
         fudge.RenderManager.update();
         viewport.draw();
     }
-    function detectHit(_position, _posRect, _sclRect) {
-        // sclRect und posrect in die Funktion und als Pramaeter den Node übergeben
-        let rectangle = new fudge.Rectangle(_position.x, _posRect.y, _sclRect.x, _sclRect.y, fudge.ORIGIN2D.CENTER);
-        return rectangle.isInside(_position.toVector2());
+    function detectHit(_position, _node) {
+        let sclRect = _node.getComponent(fudge.ComponentMesh).pivot.scaling.copy;
+        let mtxInverse = fudge.Matrix4x4.INVERSION(_node.cmpTransform.local);
+        _position.transform(mtxInverse);
+        let rect = new fudge.Rectangle(0, 0, sclRect.x, sclRect.y, fudge.ORIGIN2D.CENTER);
+        return rect.isInside(_position.toVector2());
     }
     function processHit(_node) {
         switch (_node.name) {
             case "WallTop":
             case "WallBottom":
-                ballSpeed.y -= 1;
+                ballSpeed.y *= -1;
                 break;
-            case "WallLeft":
-                ballSpeed.x -= 1;
             case "WallRight":
+            case "WallLeft":
+                ballSpeed.x *= -1;
                 break;
-            case "paddleLeft":
-            case "paddleRight ":
+            case "PaddleLeft":
+                scorePlayer1++;
+                document.getElementById("player1").innerText = scorePlayer1.toString();
+                ballSpeed.x *= -1;
+                break;
+            case "PaddleRight":
+                //reflectBall(_node);
+                scorePlayer2++;
+                document.getElementById("player2").innerText = scorePlayer2.toString();
                 ballSpeed.x *= -1;
                 break;
             default:
-                console.log("Unkown + " + _node.name);
+                console.warn("unbekannt + ", _node.name);
+                break;
         }
     }
     function moveBall() {
-        ball.cmpTransform.local.translateX(ballSpeed.x);
-        ball.cmpTransform.local.translateY(ballSpeed.y);
+        mtxBall.translate(ballSpeed);
     }
-    //TODO Benutzen wichtig
-    function createNode(name, _mesh, _material, _translation, _scaling) {
-        let node = new fudge.Node(name);
+    /*TODO Benutzen wichtig
+    function createNode(name: string, _mesh: fudge.Mesh, _material: fudge.Material, _translation: fudge.Vector2, _scaling: fudge.Vector2): fudge.Node {
+        let node: fudge.Node = new fudge.Node(name);
         node.addComponent(new fudge.ComponentTransform);
         node.addComponent(new fudge.ComponentMaterial(_material));
         node.addComponent(new fudge.ComponentMesh(_mesh));
         node.cmpTransform.local.translate(_translation.toVector3());
         node.getComponent(fudge.ComponentMesh).pivot.scale(_scaling.toVector3());
+
         return node;
+
     }
+    */
+    /*
+    * nicht benutzt
+    EVTL TODO benutzten
+    function reflectBall(_paddle: fudge.Node): void {
+        let normal: fudge.Vector3 = fudge.Vector3.X(-1);
+        normal.transform(_paddle.cmpTransform.local);
+        ballSpeed.reflect(normal);
+    }
+    */
 })(L05PongReflections || (L05PongReflections = {}));
 /*
 Pong
