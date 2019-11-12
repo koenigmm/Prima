@@ -10,4 +10,4 @@
 
 [L05PongReflections](https://www.koenigmarius.de/Prima/L05PongReflection/Main.html)
 
-[L06FudecraftFiguren](https://www.koenigmarius.de/Prima/L06FudecraftFiguren/Main.html)
+[L06FudecraftFiguren](https://www.koenigmarius.de/Prima/L06FudgecraftFiguren/Main.html)
