@@ -11,7 +11,7 @@ namespace FudgecraftFiguren {
 
     function hndload(_event: Event): void {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
-        fudge.RenderManager.initialize();
+        fudge.RenderManager.initialize(true);
         //console.log(canvas);
         gameNode = createGame();
         let camera: fudge.ComponentCamera = new fudge.ComponentCamera();

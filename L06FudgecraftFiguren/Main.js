@@ -12,7 +12,7 @@ var FudgecraftFiguren;
     let defaultVectorTranslation = new fudge.Vector2(1, 1);
     function hndload(_event) {
         const canvas = document.querySelector("canvas");
-        fudge.RenderManager.initialize();
+        fudge.RenderManager.initialize(true);
         //console.log(canvas);
         gameNode = createGame();
         let camera = new fudge.ComponentCamera();
