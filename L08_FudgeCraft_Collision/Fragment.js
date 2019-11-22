@@ -1,6 +1,6 @@
 "use strict";
-var L07_FudgeCraft_Fragments;
-(function (L07_FudgeCraft_Fragments) {
+var L08_FudgeCraft_Collsion;
+(function (L08_FudgeCraft_Collsion) {
     var fudge = FudgeCore;
     class Fragment extends fudge.Node {
         constructor(_shape) {
@@ -8,10 +8,10 @@ var L07_FudgeCraft_Fragments;
             this.position = new fudge.Vector3(0, 0, 0);
             let shape = Fragment.shapes[_shape];
             for (let position of shape) {
-                let type = Fragment.getRandomEnum(L07_FudgeCraft_Fragments.CUBE_TYPE);
+                let type = Fragment.getRandomEnum(L08_FudgeCraft_Collsion.CUBE_TYPE);
                 let vctPosition = fudge.Vector3.ZERO();
                 vctPosition.set(position[0], position[1], position[2]);
-                let cube = new L07_FudgeCraft_Fragments.Cube(type, vctPosition);
+                let cube = new L08_FudgeCraft_Collsion.Cube(type, vctPosition);
                 this.appendChild(cube);
             }
         }
@@ -31,6 +31,6 @@ var L07_FudgeCraft_Fragments;
         }
     }
     Fragment.shapes = Fragment.getShapeArray();
-    L07_FudgeCraft_Fragments.Fragment = Fragment;
-})(L07_FudgeCraft_Fragments || (L07_FudgeCraft_Fragments = {}));
+    L08_FudgeCraft_Collsion.Fragment = Fragment;
+})(L08_FudgeCraft_Collsion || (L08_FudgeCraft_Collsion = {}));
 //# sourceMappingURL=Fragment.js.map

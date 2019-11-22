@@ -1,6 +1,6 @@
 "use strict";
-var L07_FudgeCraft_Fragments;
-(function (L07_FudgeCraft_Fragments) {
+var L08_FudgeCraft_Collsion;
+(function (L08_FudgeCraft_Collsion) {
     var fudge = FudgeCore;
     let CUBE_TYPE;
     (function (CUBE_TYPE) {
@@ -10,10 +10,10 @@ var L07_FudgeCraft_Fragments;
         CUBE_TYPE["YELLOW"] = "Yellow";
         CUBE_TYPE["MAGENTA"] = "Magenta";
         CUBE_TYPE["CYAN"] = "Cyan";
-    })(CUBE_TYPE = L07_FudgeCraft_Fragments.CUBE_TYPE || (L07_FudgeCraft_Fragments.CUBE_TYPE = {}));
+    })(CUBE_TYPE = L08_FudgeCraft_Collsion.CUBE_TYPE || (L08_FudgeCraft_Collsion.CUBE_TYPE = {}));
     class Cube extends fudge.Node {
         constructor(_type, _position) {
-            super("Cube");
+            super("Cube" + _type);
             let cmpMesh = new fudge.ComponentMesh(Cube.mesh);
             this.addComponent(cmpMesh);
             let cmpMaterial = new fudge.ComponentMaterial(Cube.materials.get(_type));
@@ -35,6 +35,6 @@ var L07_FudgeCraft_Fragments;
     }
     Cube.mesh = new fudge.MeshCube();
     Cube.materials = Cube.createMaterials();
-    L07_FudgeCraft_Fragments.Cube = Cube;
-})(L07_FudgeCraft_Fragments || (L07_FudgeCraft_Fragments = {}));
+    L08_FudgeCraft_Collsion.Cube = Cube;
+})(L08_FudgeCraft_Collsion || (L08_FudgeCraft_Collsion = {}));
 //# sourceMappingURL=Cube.js.map

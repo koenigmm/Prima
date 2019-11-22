@@ -1,12 +1,15 @@
 "use strict";
-var L07_FudgeCraft_Fragments;
-(function (L07_FudgeCraft_Fragments) {
+var L08_FudgeCraft_Collsion;
+(function (L08_FudgeCraft_Collsion) {
     var fudge = FudgeCore;
     window.addEventListener("load", hndLoad);
     let viewport;
     let game;
     let rotate = fudge.Vector3.ZERO();
+    let grid = new L08_FudgeCraft_Collsion.Grid;
     function hndLoad(_event) {
+        grid.set("Jonas", new L08_FudgeCraft_Collsion.Cube(L08_FudgeCraft_Collsion.CUBE_TYPE.GREEN, fudge.Vector3.ZERO()));
+        console.log(grid.get("Jonas"));
         const canvas = document.querySelector("canvas");
         fudge.RenderManager.initialize(true);
         fudge.Debug.log("Canvas", canvas);
@@ -15,15 +18,15 @@ var L07_FudgeCraft_Fragments;
         cmpCamera.pivot.lookAt(fudge.Vector3.ZERO());
         game = new fudge.Node("FudgeCraft");
         // let cube: Cube = new Cube(CUBE_TYPE.BLUE);
-        let fragment = new L07_FudgeCraft_Fragments.Fragment(0);
+        let fragment = new L08_FudgeCraft_Collsion.Fragment(0);
         // ƒ.Debug.log("Fragment", fragment);
         fragment.addComponent(new fudge.ComponentTransform());
         game.appendChild(fragment);
-        fragment = new L07_FudgeCraft_Fragments.Fragment(1);
+        fragment = new L08_FudgeCraft_Collsion.Fragment(1);
         // ƒ.Debug.log("Fragment", fragment);
         fragment.addComponent(new fudge.ComponentTransform(fudge.Matrix4x4.TRANSLATION(fudge.Vector3.X(3))));
         game.appendChild(fragment);
-        fragment = new L07_FudgeCraft_Fragments.Fragment(2);
+        fragment = new L08_FudgeCraft_Collsion.Fragment(2);
         // ƒ.Debug.log("Fragment", fragment);
         fragment.addComponent(new fudge.ComponentTransform(fudge.Matrix4x4.TRANSLATION(fudge.Vector3.X(-3))));
         game.appendChild(fragment);
@@ -60,5 +63,5 @@ var L07_FudgeCraft_Fragments;
         fudge.RenderManager.update();
         viewport.draw();
     }
-})(L07_FudgeCraft_Fragments || (L07_FudgeCraft_Fragments = {}));
+})(L08_FudgeCraft_Collsion || (L08_FudgeCraft_Collsion = {}));
 //# sourceMappingURL=Main.js.map

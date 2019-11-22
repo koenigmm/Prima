@@ -6,7 +6,13 @@ namespace L08_FudgeCraft_Collsion {
     let game: fudge.Node;
     let rotate: fudge.Vector3 = fudge.Vector3.ZERO();
 
+    let grid: Grid = new Grid;
+
     function hndLoad(_event: Event): void {
+        grid.set("Jonas", new Cube(CUBE_TYPE.GREEN,fudge.Vector3.ZERO()));
+        console.log(grid.get("Jonas"))
+
+
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
         fudge.RenderManager.initialize(true);
         fudge.Debug.log("Canvas", canvas);
