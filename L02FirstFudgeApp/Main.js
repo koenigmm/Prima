@@ -44,7 +44,7 @@ var L02FirstFudge;
         viewport.initialize("Viewport", node, camera, canvas);
         fudge.Debug.log(viewport);
         viewport.draw();
-        //fudge.Matrix4x4() Translate ausprobieren eigentlich schon gemacht. 
+        //fudge.Matrix4x4() Translate ausprobieren eigentlich schon gemacht. s
     }
 })(L02FirstFudge || (L02FirstFudge = {}));
 //TODO

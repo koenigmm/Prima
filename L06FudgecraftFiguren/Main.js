@@ -63,20 +63,20 @@ var FudgecraftFiguren;
         for (let i = 0; i < amountOfCubes; i++) {
             let cubeMesh = new fudge.MeshCube();
             let whiteMaterial = new fudge.Material("white", fudge.ShaderUniColor, new fudge.CoatColored(new fudge.Color(1, 1, 1, 1)));
-            let element_figur = createNode("Element " + i, cubeMesh, whiteMaterial, defaultVectorTranslation, defaultVectorScaling);
-            node.appendChild(element_figur);
-            switch (element_figur.name) {
+            let elementFigur = createNode("Element " + i, cubeMesh, whiteMaterial, defaultVectorTranslation, defaultVectorScaling);
+            node.appendChild(elementFigur);
+            switch (elementFigur.name) {
                 case "Element 0":
-                    element_figur.cmpTransform.local.translation = position1.toVector3();
+                    elementFigur.cmpTransform.local.translation = position1.toVector3();
                     break;
                 case "Element 1":
-                    element_figur.cmpTransform.local.translation = position2.toVector3();
+                    elementFigur.cmpTransform.local.translation = position2.toVector3();
                     break;
                 case "Element 2":
-                    element_figur.cmpTransform.local.translation = position3.toVector3();
+                    elementFigur.cmpTransform.local.translation = position3.toVector3();
                     break;
                 case "Element 3":
-                    element_figur.cmpTransform.local.translation = position4.toVector3();
+                    elementFigur.cmpTransform.local.translation = position4.toVector3();
                     break;
             }
         }
