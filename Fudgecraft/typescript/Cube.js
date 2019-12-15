@@ -2,15 +2,129 @@
 var FudgecraftGame;
 (function (FudgecraftGame) {
     var ƒ = FudgeCore;
-    let cubeCounter = 0;
+    //let cubeCounter: number = 0;
+    let MOVE;
+    (function (MOVE) {
+        MOVE["LAYER_UP"] = "Layer Up";
+        MOVE["LAYER_DOWN"] = "Layer Down";
+        MOVE["RIGHT"] = "Right";
+        MOVE["LEFT"] = "LEFT";
+        MOVE["IN"] = "In";
+        MOVE["OUT"] = "Out";
+    })(MOVE = FudgecraftGame.MOVE || (FudgecraftGame.MOVE = {}));
     class Cube extends ƒ.Node {
-        constructor(cubeMaterialType, postion) {
-            super("cube" + cubeCounter);
+        constructor(cubeMaterialType, postion, allFixedPositions) {
+            super("cube");
             this.mesh = new ƒ.MeshCube;
+            this.fixedPosition = postion;
+            //this.fixedPostionAsVector = new ƒ.Vector3(this.fixedPosition.positionInRow, this.fixedPosition.layer, this.fixedPosition.row);
+            this.updateFixedPositonAsVector();
+            this.createCube(cubeMaterialType, allFixedPositions);
+        }
+        //TODO Einbau einer Überprüfung, ob die Bewegung noch innerhalb des Grids ist. Am besten eigene Methode schreiben.
+        move(allFixedPositions, move) {
+            let copyOfAcutalPosition = new FudgecraftGame.FixedPosition(this.fixedPosition.row, this.fixedPosition.positionInRow, this.fixedPosition.layer);
+            switch (move) {
+                case MOVE.LAYER_UP:
+                    copyOfAcutalPosition.layer++;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.layer++;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich");
+                    break;
+                case MOVE.LAYER_DOWN:
+                    copyOfAcutalPosition.layer--;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.layer--;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich");
+                    break;
+                case MOVE.LEFT:
+                    copyOfAcutalPosition.positionInRow--;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.positionInRow--;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich");
+                    break;
+                case MOVE.RIGHT:
+                    copyOfAcutalPosition.positionInRow++;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.positionInRow++;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich");
+                    break;
+                case MOVE.IN:
+                    copyOfAcutalPosition.row--;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.row--;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich");
+                    break;
+                case MOVE.OUT:
+                    copyOfAcutalPosition.row++;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.row++;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich");
+                    break;
+            }
+            this.updateFixedPositonAsVector();
+            allFixedPositions.setPostion(this.fixedPosition, this);
+            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
+        }
+        moveLayerDown(allFixedPositions) {
+            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+            this.fixedPosition.layer--;
+            this.updateFixedPositonAsVector();
+            allFixedPositions.setPostion(this.fixedPosition, this);
+            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
+        }
+        moveRight(allFixedPositions) {
+            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+            this.fixedPosition.positionInRow++;
+            this.updateFixedPositonAsVector();
+            allFixedPositions.setPostion(this.fixedPosition, this);
+            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
+        }
+        moveLeft(allFixedPositions) {
+            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+            this.fixedPosition.positionInRow--;
+            this.updateFixedPositonAsVector();
+            allFixedPositions.setPostion(this.fixedPosition, this);
+            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
+        }
+        moveIn(allFixedPositions) {
+            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+            this.fixedPosition.row--;
+            this.updateFixedPositonAsVector();
+            allFixedPositions.setPostion(this.fixedPosition, this);
+            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
+        }
+        moveOut(allFixedPositions) {
+            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+            this.fixedPosition.row++;
+            this.updateFixedPositonAsVector();
+            allFixedPositions.setPostion(this.fixedPosition, this);
+            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
+        }
+        createCube(cubeMaterialType, allFixedPositions) {
             this.addComponent(new ƒ.ComponentMesh(this.mesh));
             this.setMaterial(cubeMaterialType);
             this.addComponent(new ƒ.ComponentMaterial(this.material));
-            this.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(postion)));
+            this.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector)));
+            allFixedPositions.setPostion(this.fixedPosition, this);
         }
         setMaterial(type) {
             switch (type) {
@@ -21,20 +135,24 @@ var FudgecraftGame;
                     this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.CYAN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.CYAN));
                     break;
                 case FudgecraftGame.CUBE_MATERIAL_TYPE.GREEN:
-                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.CYAN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.GREEN));
+                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.GREEN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.GREEN));
                     break;
                 case FudgecraftGame.CUBE_MATERIAL_TYPE.GREY:
-                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.CYAN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.GREY));
+                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.GREY, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.GREY));
                     break;
                 case FudgecraftGame.CUBE_MATERIAL_TYPE.MAGENTA:
-                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.CYAN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.MAGENTA));
+                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.MAGENTA, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.MAGENTA));
                     break;
                 case FudgecraftGame.CUBE_MATERIAL_TYPE.RED:
-                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.CYAN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.RED));
+                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.RED, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.RED));
                     break;
                 case FudgecraftGame.CUBE_MATERIAL_TYPE.YELLOW:
-                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.CYAN, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.YELLOW));
+                    this.material = new ƒ.Material(FudgecraftGame.CUBE_MATERIAL_TYPE.YELLOW, ƒ.ShaderFlat, new ƒ.CoatColored(ƒ.Color.YELLOW));
+                    break;
             }
+        }
+        updateFixedPositonAsVector() {
+            this.fixedPostionAsVector = new ƒ.Vector3(this.fixedPosition.positionInRow, this.fixedPosition.layer, this.fixedPosition.row);
         }
     }
     FudgecraftGame.Cube = Cube;

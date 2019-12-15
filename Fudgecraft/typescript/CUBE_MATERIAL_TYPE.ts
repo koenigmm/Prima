@@ -6,6 +6,7 @@ namespace FudgecraftGame {
         YELLOW = "Yellow",
         MAGENTA = "Magenta",
         CYAN = "Cyan",
-        GREY = "Grey"
+        GREY = "Grey",
+        TRANSPARENT = "Nothing"
     }
 }

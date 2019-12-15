@@ -10,6 +10,7 @@ var FudgecraftGame;
         CUBE_MATERIAL_TYPE["MAGENTA"] = "Magenta";
         CUBE_MATERIAL_TYPE["CYAN"] = "Cyan";
         CUBE_MATERIAL_TYPE["GREY"] = "Grey";
+        CUBE_MATERIAL_TYPE["TRANSPARENT"] = "Nothing";
     })(CUBE_MATERIAL_TYPE = FudgecraftGame.CUBE_MATERIAL_TYPE || (FudgecraftGame.CUBE_MATERIAL_TYPE = {}));
 })(FudgecraftGame || (FudgecraftGame = {}));
 //# sourceMappingURL=CUBE_MATERIAL_TYPE.js.map

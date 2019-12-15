@@ -6,42 +6,44 @@ namespace FudgecraftGame {
         private materialType: CUBE_MATERIAL_TYPE;
         private componentTransform: ƒ.ComponentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(new ƒ.Vector3(0, 0, 0)));
 
-        constructor() {
+        constructor(allFixedPositions: AllFixedPositions) {
             super("Fragmenttyp: " + FRAGMENT_TYPE);
             // Test
             // this.materialType = CUBE_MATERIAL_TYPE.RED;
             // this.fragmentType = FRAGMENT_TYPE.STUFEN_REIHE;
             this.setRandomMaterialType();
             this.setRandomFragmentType();
-            this.createFragment();
+            this.createFragment(allFixedPositions);
             this.addComponent(this.componentTransform);
             //this.setPosition(new ƒ.Vector3(2, 0, 0));
         }
 
-        public setPosition(position: ƒ.Vector3): void {
-            this.componentTransform.local = ƒ.Matrix4x4.TRANSLATION(position);
-        }
+        //Platzhalter
+        // public setPosition(position: ƒ.Vector3): void {
+        //     this.componentTransform.local = ƒ.Matrix4x4.TRANSLATION(position);
+        // }
 
+        //Platzhalter
         public setRotation(rotation: ƒ.Vector3): void {
             this.componentTransform.local.rotation = rotation;
         }
 
-        private createFragment(): void {
+        private createFragment(allFixedPositions: AllFixedPositions): void {
             switch (this.fragmentType) {
                 case FRAGMENT_TYPE.DREI_REIHE:
-                    this.createDreierReihe();
+                    this.createDreierReihe(allFixedPositions);
                     break;
                 case FRAGMENT_TYPE.L_REIHE:
-                    this.createLReihe();
+                    this.createLReihe(allFixedPositions);
                     break;
                 case FRAGMENT_TYPE.L_REIHE_REVERSE:
-                    this.createLReiheReverse();
+                    this.createLReiheReverse(allFixedPositions);
                     break;
                 case FRAGMENT_TYPE.ZWEI_REIHE:
-                    this.createZweierReihe();
+                    this.createZweierReihe(allFixedPositions);
                     break;
                 case FRAGMENT_TYPE.STUFEN_REIHE:
-                    this.createStufenReihe();
+                    this.createStufenReihe(allFixedPositions);
                     break;
             }
 
@@ -101,53 +103,78 @@ namespace FudgecraftGame {
             }
         }
 
-        private createDreierReihe(): void {
-            let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
+        private createDreierReihe(allFixedPositions: AllFixedPositions): void {
+            let cube01: Cube = new Cube(this.materialType, new FixedPosition(0, 0, 0), allFixedPositions);
+            let cube02: Cube = new Cube(this.materialType, new FixedPosition(1, 0, 0), allFixedPositions);
+            let cube03: Cube = new Cube(this.materialType, new FixedPosition(2, 0, 0), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
+            console.log("DreierReihe");
+            
         }
 
-        private createLReihe(): void {
-            let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
-            let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 1, 0));
+        private createLReihe(allFixedPositions: AllFixedPositions): void {
+            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
+            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
+            // let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
+            // let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 1, 0));
+            let cube01: Cube = new Cube(this.materialType, new FixedPosition(0, 0, 0), allFixedPositions);
+            let cube02: Cube = new Cube(this.materialType, new FixedPosition(1, 0, 0), allFixedPositions);
+            let cube03: Cube = new Cube(this.materialType, new FixedPosition(2, 0, 0), allFixedPositions);
+            let cube04: Cube = new Cube(this.materialType, new FixedPosition(2, 0, 1), allFixedPositions);
+            this.appendChild(cube01);
+            this.appendChild(cube02);
+            this.appendChild(cube03);
+            this.appendChild(cube04);
+            console.log("LREIHE");
+            
+        }
+
+        private createLReiheReverse(allFixedPositions: AllFixedPositions): void {
+            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
+            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 1, 0));
+            // let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
+            // let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
+            console.log("lReihe Reverse");
+            
+            let cube01: Cube = new Cube(this.materialType, new FixedPosition(0, 0, 0), allFixedPositions);
+            let cube02: Cube = new Cube(this.materialType, new FixedPosition(1, 0, 0), allFixedPositions);
+            let cube03: Cube = new Cube(this.materialType, new FixedPosition(2, 0, 0), allFixedPositions);
+            let cube04: Cube = new Cube(this.materialType, new FixedPosition(2, 0, 1), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
             this.appendChild(cube04);
         }
 
-        private createLReiheReverse(): void {
-            let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 1, 0));
-            let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
+        private createZweierReihe(allFixedPositions: AllFixedPositions): void {
+            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
+            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
+            let cube01: Cube = new Cube(this.materialType, new FixedPosition(0, 0, 0), allFixedPositions);
+            let cube02: Cube = new Cube(this.materialType, new FixedPosition(1, 0, 0), allFixedPositions);
+            this.appendChild(cube01);
+            this.appendChild(cube02);
+            console.log("Zweier Reihe");
+            
+        }
+
+        private createStufenReihe(allFixedPositions: AllFixedPositions): void {
+            console.log("Stufen Reihe");
+            
+            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
+            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
+            // let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 1, 0));
+            // let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
+            let cube01: Cube = new Cube(this.materialType, new FixedPosition(0, 0, 0), allFixedPositions);
+            let cube02: Cube = new Cube(this.materialType, new FixedPosition(1, 0, 0), allFixedPositions);
+            let cube03: Cube = new Cube(this.materialType, new FixedPosition(1, 0, 1), allFixedPositions);
+            let cube04: Cube = new Cube(this.materialType, new FixedPosition(2, 0, 0), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
             this.appendChild(cube04);
         }
 
-        private createZweierReihe(): void {
-            let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            this.appendChild(cube01);
-            this.appendChild(cube02);
-        }
-
-        private createStufenReihe(): void {
-            let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 1, 0));
-            let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
-            this.appendChild(cube01);
-            this.appendChild(cube02);
-            this.appendChild(cube03);
-            this.appendChild(cube04);
-        }
     }
 }

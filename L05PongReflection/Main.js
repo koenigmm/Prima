@@ -73,7 +73,6 @@ var L05PongReflections;
         paddleLeft.addComponent(cmpMesh);
         paddleLeft.addComponent(new fudge.ComponentTransform);
         pongNode.appendChild(paddleLeft);
-        ;
         //Right Paddle Node zusammensetzten und zu Pong Node hinzufügen
         paddleRight.addComponent(quad02MtrComponent);
         paddleRight.addComponent(cmpQuad02);
