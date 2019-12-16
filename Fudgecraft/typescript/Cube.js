@@ -21,6 +21,9 @@ var FudgecraftGame;
             this.updateFixedPositonAsVector();
             this.createCube(cubeMaterialType, allFixedPositions);
         }
+        getFixedPosition() {
+            return this.fixedPosition;
+        }
         //TODO Einbau einer Überprüfung, ob die Bewegung noch innerhalb des Grids ist. Am besten eigene Methode schreiben.
         move(allFixedPositions, move) {
             let copyOfAcutalPosition = new FudgecraftGame.FixedPosition(this.fixedPosition.row, this.fixedPosition.positionInRow, this.fixedPosition.layer);
@@ -32,7 +35,7 @@ var FudgecraftGame;
                         this.fixedPosition.layer++;
                     }
                     else
-                        console.log("Bewegung nicht möglich");
+                        console.log("Bewegung nicht möglich class cube");
                     break;
                 case MOVE.LAYER_DOWN:
                     copyOfAcutalPosition.layer--;
@@ -41,7 +44,7 @@ var FudgecraftGame;
                         this.fixedPosition.layer--;
                     }
                     else
-                        console.log("Bewegung nicht möglich");
+                        console.log("Bewegung nicht möglich class cube");
                     break;
                 case MOVE.LEFT:
                     copyOfAcutalPosition.positionInRow--;
@@ -50,7 +53,7 @@ var FudgecraftGame;
                         this.fixedPosition.positionInRow--;
                     }
                     else
-                        console.log("Bewegung nicht möglich");
+                        console.log("Bewegung nicht möglich class cube");
                     break;
                 case MOVE.RIGHT:
                     copyOfAcutalPosition.positionInRow++;
@@ -59,62 +62,27 @@ var FudgecraftGame;
                         this.fixedPosition.positionInRow++;
                     }
                     else
-                        console.log("Bewegung nicht möglich");
+                        console.log("Bewegung nicht möglich class cube");
                     break;
                 case MOVE.IN:
-                    copyOfAcutalPosition.row--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.row--;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich");
-                    break;
-                case MOVE.OUT:
                     copyOfAcutalPosition.row++;
                     if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
                         allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
                         this.fixedPosition.row++;
                     }
                     else
-                        console.log("Bewegung nicht möglich");
+                        console.log("Bewegung nicht möglich class cube");
+                    break;
+                case MOVE.OUT:
+                    copyOfAcutalPosition.row--;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.row--;
+                    }
+                    else
+                        console.log("Bewegung nicht möglich class cube");
                     break;
             }
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-        moveLayerDown(allFixedPositions) {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.layer--;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-        moveRight(allFixedPositions) {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.positionInRow++;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-        moveLeft(allFixedPositions) {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.positionInRow--;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-        moveIn(allFixedPositions) {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.row--;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-        moveOut(allFixedPositions) {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.row++;
             this.updateFixedPositonAsVector();
             allFixedPositions.setPostion(this.fixedPosition, this);
             this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);

@@ -5,7 +5,8 @@ var FudgecraftGame;
     class Fragment extends ƒ.Node {
         constructor(allFixedPositions) {
             super("Fragmenttyp: " + FudgecraftGame.FRAGMENT_TYPE);
-            this.componentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(new ƒ.Vector3(0, 0, 0)));
+            this.componentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(new ƒ.Vector3(0, 0, 0))); //Platzhalter
+            this.listOfCubes = new Array();
             // Test
             // this.materialType = CUBE_MATERIAL_TYPE.RED;
             // this.fragmentType = FRAGMENT_TYPE.STUFEN_REIHE;
@@ -14,14 +15,112 @@ var FudgecraftGame;
             this.createFragment(allFixedPositions);
             this.addComponent(this.componentTransform);
             //this.setPosition(new ƒ.Vector3(2, 0, 0));
+            console.log(this.listOfCubes);
         }
-        //Platzhalter
-        // public setPosition(position: ƒ.Vector3): void {
-        //     this.componentTransform.local = ƒ.Matrix4x4.TRANSLATION(position);
-        // }
-        //Platzhalter
-        setRotation(rotation) {
-            this.componentTransform.local.rotation = rotation;
+        move(allFixedPositions, move) {
+            // Save Positions
+            let copyOfPosition = new Array();
+            for (const cube of this.listOfCubes) {
+                let value = new FudgecraftGame.FixedPosition(cube.getFixedPosition().row, cube.getFixedPosition().positionInRow, cube.getFixedPosition().layer);
+                copyOfPosition.push(value);
+            }
+            switch (move) {
+                case FudgecraftGame.MOVE.LAYER_UP:
+                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                        for (let cube of this.listOfCubes) {
+                            cube.move(allFixedPositions, move);
+                        }
+                    }
+                    break;
+                case FudgecraftGame.MOVE.LAYER_DOWN:
+                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                        for (let cube of this.listOfCubes) {
+                            cube.move(allFixedPositions, move);
+                        }
+                    }
+                    break;
+                case FudgecraftGame.MOVE.LEFT:
+                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                        for (let cube of this.listOfCubes) {
+                            cube.move(allFixedPositions, move);
+                        }
+                    }
+                    break;
+                case FudgecraftGame.MOVE.RIGHT:
+                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                        for (let cube of this.listOfCubes) {
+                            cube.move(allFixedPositions, move);
+                        }
+                    }
+                    break;
+                case FudgecraftGame.MOVE.IN:
+                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                        for (let cube of this.listOfCubes) {
+                            cube.move(allFixedPositions, move);
+                        }
+                    }
+                    break;
+                case FudgecraftGame.MOVE.OUT:
+                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                        for (let cube of this.listOfCubes) {
+                            cube.move(allFixedPositions, move);
+                        }
+                    }
+                    break;
+                default:
+                    console.log("Bewegungstyp nicht erkannt");
+            }
+        }
+        makeTestMove(move, fixedPositions, allFixedPositions) {
+            // Test Move
+            let success = false;
+            switch (move) {
+                case FudgecraftGame.MOVE.LAYER_UP:
+                    for (let position of fixedPositions) {
+                        position.layer++;
+                    }
+                    break;
+                case FudgecraftGame.MOVE.LAYER_DOWN:
+                    for (let position of fixedPositions) {
+                        position.layer--;
+                    }
+                    break;
+                case FudgecraftGame.MOVE.LEFT:
+                    for (let position of fixedPositions) {
+                        position.positionInRow--;
+                    }
+                    break;
+                case FudgecraftGame.MOVE.RIGHT:
+                    for (let position of fixedPositions) {
+                        position.positionInRow++;
+                    }
+                    break;
+                case FudgecraftGame.MOVE.IN: {
+                    for (let position of fixedPositions) {
+                        position.row++;
+                    }
+                    break;
+                }
+                case FudgecraftGame.MOVE.OUT: {
+                    for (let position of fixedPositions) {
+                        position.row--;
+                    }
+                    break;
+                }
+            }
+            // Check
+            for (let cubePosition of fixedPositions) {
+                if (allFixedPositions.isPositionInGrid(cubePosition) && cubePosition.isUsed === false) {
+                    success = true;
+                    continue;
+                }
+                else {
+                    console.log("Bewegung nicht möglich");
+                    success = false;
+                    break;
+                }
+            }
+            return success;
         }
         createFragment(allFixedPositions) {
             switch (this.fragmentType) {
@@ -94,66 +193,69 @@ var FudgecraftGame;
         }
         createDreierReihe(allFixedPositions) {
             let cube01 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 0, 0), allFixedPositions);
-            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(1, 0, 0), allFixedPositions);
-            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(2, 0, 0), allFixedPositions);
+            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 1, 0), allFixedPositions);
+            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 2, 0), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
+            this.listOfCubes.push(cube01);
+            this.listOfCubes.push(cube02);
+            this.listOfCubes.push(cube03);
             console.log("DreierReihe");
         }
         createLReihe(allFixedPositions) {
-            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            // let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
-            // let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 1, 0));
             let cube01 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 0, 0), allFixedPositions);
-            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(1, 0, 0), allFixedPositions);
-            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(2, 0, 0), allFixedPositions);
-            let cube04 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(2, 0, 1), allFixedPositions);
+            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 1, 0), allFixedPositions);
+            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 2, 0), allFixedPositions);
+            let cube04 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 2, 1), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
             this.appendChild(cube04);
+            this.listOfCubes.push(cube01);
+            this.listOfCubes.push(cube02);
+            this.listOfCubes.push(cube03);
+            this.listOfCubes.push(cube04);
             console.log("LREIHE");
         }
         createLReiheReverse(allFixedPositions) {
-            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 1, 0));
-            // let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            // let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
             console.log("lReihe Reverse");
             let cube01 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 0, 0), allFixedPositions);
-            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(1, 0, 0), allFixedPositions);
-            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(2, 0, 0), allFixedPositions);
-            let cube04 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(2, 0, 1), allFixedPositions);
+            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 0, 1), allFixedPositions);
+            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 1, 0), allFixedPositions);
+            let cube04 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 2, 0), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
             this.appendChild(cube04);
+            this.listOfCubes.push(cube01);
+            this.listOfCubes.push(cube02);
+            this.listOfCubes.push(cube03);
+            this.listOfCubes.push(cube04);
         }
         createZweierReihe(allFixedPositions) {
-            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
             let cube01 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 0, 0), allFixedPositions);
-            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(1, 0, 0), allFixedPositions);
+            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 1, 0), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
+            this.listOfCubes.push(cube01);
+            this.listOfCubes.push(cube02);
             console.log("Zweier Reihe");
         }
         createStufenReihe(allFixedPositions) {
             console.log("Stufen Reihe");
-            // let cube01: Cube = new Cube(this.materialType, new ƒ.Vector3(0, 0, 0));
-            // let cube02: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 0, 0));
-            // let cube03: Cube = new Cube(this.materialType, new ƒ.Vector3(1, 1, 0));
-            // let cube04: Cube = new Cube(this.materialType, new ƒ.Vector3(2, 0, 0));
             let cube01 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 0, 0), allFixedPositions);
-            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(1, 0, 0), allFixedPositions);
-            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(1, 0, 1), allFixedPositions);
-            let cube04 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(2, 0, 0), allFixedPositions);
+            let cube02 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 1, 0), allFixedPositions);
+            let cube03 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 1, 1), allFixedPositions);
+            let cube04 = new FudgecraftGame.Cube(this.materialType, new FudgecraftGame.FixedPosition(0, 2, 0), allFixedPositions);
             this.appendChild(cube01);
             this.appendChild(cube02);
             this.appendChild(cube03);
             this.appendChild(cube04);
+            this.listOfCubes.push(cube01);
+            this.listOfCubes.push(cube02);
+            this.listOfCubes.push(cube03);
+            this.listOfCubes.push(cube04);
         }
     }
     FudgecraftGame.Fragment = Fragment;

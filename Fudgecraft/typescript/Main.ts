@@ -10,33 +10,18 @@ namespace FudgecraftGame {
     function hndload(_event: Event): void {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
         ƒ.RenderManager.initialize(true);
-        
-        //Camera
-        //camera.pivot.translate(new ƒ.Vector3(50, 50, 50));
-        //camera.pivot.lookAt(ƒ.Vector3.ZERO());
-        //camera.pivot.rotateY(90);
         camera.pivot.translateZ(40);
         camera.backgroundColor = ƒ.Color.WHITE;
 
-        let allFixedPositionsTest: AllFixedPositions = new AllFixedPositions(10);
-        let myCube: Cube = new Cube(CUBE_MATERIAL_TYPE.BLUE, new FixedPosition(0, 0, 0), allFixedPositionsTest);
-        
-        for (let index: number = 1; index < 9; index++) {
-            myCube.move(allFixedPositionsTest, MOVE.LAYER_UP);
-            
-        }
-        
-        gameNode.appendChild(myCube);
+        let allFixedPositionsTest: AllFixedPositions = new AllFixedPositions(5);
       
-        //let myFragment: Fragment = new Fragment(allFixedPositionsTest);
-        //myFragment.setPosition(new ƒ.Vector3(0, -5, 0));
-        //gameNode.appendChild(myFragment);
-        //myFragment.setRotation(new ƒ.Vector3(0, 45, 0));
-
-        // let myFragment02: Fragment = new Fragment();
-        // gameNode.appendChild(myFragment02);
-        // myFragment02.setPosition(new ƒ.Vector3(0, 2.5, 0));
-        // myFragment02.setRotation(new ƒ.Vector3(120, 0, 0));
+        //Fragment Test
+        let myFragment: Fragment = new Fragment(allFixedPositionsTest);
+        myFragment.move(allFixedPositionsTest, MOVE.IN);
+        myFragment.move(allFixedPositionsTest, MOVE.IN);
+        myFragment.move(allFixedPositionsTest, MOVE.IN);
+        myFragment.cmpTransform.local.rotation = new ƒ.Vector3(45, 45, 45);
+        gameNode.appendChild(myFragment);
         
 
         // Lights

@@ -26,19 +26,22 @@ namespace FudgecraftGame {
 
         }
 
+        public getFixedPosition(): FixedPosition {
+            return this.fixedPosition;
+        }
+
         //TODO Einbau einer Überprüfung, ob die Bewegung noch innerhalb des Grids ist. Am besten eigene Methode schreiben.
-        public move(allFixedPositions: AllFixedPositions, move: MOVE): void {
+        public move(allFixedPositions: AllFixedPositions, move: MOVE): void{
             let copyOfAcutalPosition: FixedPosition = new FixedPosition(this.fixedPosition.row, this.fixedPosition.positionInRow, this.fixedPosition.layer);
 
             switch (move) {
-
                 case MOVE.LAYER_UP:
                     copyOfAcutalPosition.layer++;
                     if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
                         allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
                         this.fixedPosition.layer++;
                     }
-                    else console.log("Bewegung nicht möglich");
+                    else console.log("Bewegung nicht möglich class cube");
                     break;
 
                 case MOVE.LAYER_DOWN:
@@ -47,7 +50,7 @@ namespace FudgecraftGame {
                         allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
                         this.fixedPosition.layer--;
                     }
-                    else console.log("Bewegung nicht möglich");
+                    else console.log("Bewegung nicht möglich class cube");
                     break;
 
                 case MOVE.LEFT:
@@ -56,7 +59,7 @@ namespace FudgecraftGame {
                         allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
                         this.fixedPosition.positionInRow--;
                     }
-                    else console.log("Bewegung nicht möglich");
+                    else console.log("Bewegung nicht möglich class cube");
                     break;
 
                 case MOVE.RIGHT:
@@ -65,69 +68,28 @@ namespace FudgecraftGame {
                         allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
                         this.fixedPosition.positionInRow++;
                     }
-                    else console.log("Bewegung nicht möglich");
+                    else console.log("Bewegung nicht möglich class cube");
                     break;
 
                 case MOVE.IN:
-                    copyOfAcutalPosition.row--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.row--;
-                    }
-                    else console.log("Bewegung nicht möglich");
-                    break;
-
-                case MOVE.OUT:
                     copyOfAcutalPosition.row++;
                     if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
                         allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
                         this.fixedPosition.row++;
                     }
-                    else console.log("Bewegung nicht möglich");
+                    else console.log("Bewegung nicht möglich class cube");
+                    break;
+
+                case MOVE.OUT:
+                    copyOfAcutalPosition.row--;
+                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
+                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                        this.fixedPosition.row--;
+                    }
+                    else console.log("Bewegung nicht möglich class cube");
                     break;
             }
 
-
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-
-        public moveLayerDown(allFixedPositions: AllFixedPositions): void {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.layer--;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-
-        public moveRight(allFixedPositions: AllFixedPositions): void {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.positionInRow++;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-
-        public moveLeft(allFixedPositions: AllFixedPositions): void {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.positionInRow--;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-
-        public moveIn(allFixedPositions: AllFixedPositions): void {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.row--;
-            this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
-            this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
-        }
-
-        public moveOut(allFixedPositions: AllFixedPositions): void {
-            allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-            this.fixedPosition.row++;
             this.updateFixedPositonAsVector();
             allFixedPositions.setPostion(this.fixedPosition, this);
             this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);

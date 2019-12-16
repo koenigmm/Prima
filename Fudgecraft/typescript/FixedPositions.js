@@ -24,6 +24,9 @@ var FudgecraftGame;
             if (fixedPosition.positionInRow >= this.edgeSizeForDimension || fixedPosition.row >= this.edgeSizeForDimension || fixedPosition.layer >= this.edgeSizeForDimension) {
                 return false;
             }
+            else if (fixedPosition.positionInRow < 0 || fixedPosition.row < 0 || fixedPosition.layer < 0) {
+                return false;
+            }
             else
                 return true;
         }
