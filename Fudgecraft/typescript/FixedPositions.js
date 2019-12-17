@@ -13,12 +13,23 @@ var FudgecraftGame;
     }
     FudgecraftGame.FixedPosition = FixedPosition;
     class AllFixedPositions {
-        //private amountOfPositions: number;
         constructor(edgeSizeForDimension) {
             this.edgeSizeForDimension = edgeSizeForDimension;
-            //this.amountOfPositions = edgeSizeForDimension * edgeSizeForDimension * edgeSizeForDimension;
             this.allFixedPositionsList = this.createEmptyFixedPositions();
             console.log(this.allFixedPositionsList);
+        }
+        isPostionUsed(row, layer, positionInRow) {
+            for (let position of this.allFixedPositionsList) {
+                if (row === position.row && layer === position.layer && positionInRow === position.positionInRow) {
+                    if (position.isUsed) {
+                        console.log(position);
+                        //console.log("Bewegung nicht möglich");
+                        return true;
+                    }
+                }
+            }
+            //console.log("Bewegung möglich");
+            return false;
         }
         isPositionInGrid(fixedPosition) {
             if (fixedPosition.positionInRow >= this.edgeSizeForDimension || fixedPosition.row >= this.edgeSizeForDimension || fixedPosition.layer >= this.edgeSizeForDimension) {
@@ -49,6 +60,26 @@ var FudgecraftGame;
                 if (c.positionInRow === positionInRow && c.row === row && c.layer === layer) {
                     c.isUsed = false;
                     c.cubeInPosition = null;
+                }
+            }
+        }
+        makeSelectedPositionUnused(fixedPosition) {
+            let positionInRow = fixedPosition.positionInRow;
+            let row = fixedPosition.row;
+            let layer = fixedPosition.layer;
+            for (let c of this.allFixedPositionsList) {
+                if (c.positionInRow === positionInRow && c.row === row && c.layer === layer) {
+                    c.isUsed = false;
+                }
+            }
+        }
+        makeSelectedPositioUsed(fixedPosition) {
+            let positionInRow = fixedPosition.positionInRow;
+            let row = fixedPosition.row;
+            let layer = fixedPosition.layer;
+            for (let c of this.allFixedPositionsList) {
+                if (c.positionInRow === positionInRow && c.row === row && c.layer === layer) {
+                    c.isUsed = true;
                 }
             }
         }

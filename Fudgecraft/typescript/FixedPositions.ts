@@ -19,17 +19,31 @@ namespace FudgecraftGame {
     }
 
     export class AllFixedPositions {
-        //private static idCounter: number = 0;
         public allFixedPositionsList: Array<FixedPosition>;
         private edgeSizeForDimension: number;
-        //private amountOfPositions: number;
 
         constructor(edgeSizeForDimension: number) {
             this.edgeSizeForDimension = edgeSizeForDimension;
-            //this.amountOfPositions = edgeSizeForDimension * edgeSizeForDimension * edgeSizeForDimension;
             this.allFixedPositionsList = this.createEmptyFixedPositions();
             console.log(this.allFixedPositionsList);
         }
+
+
+        public isPostionUsed(row: number, layer: number, positionInRow: number): boolean {
+            for (let position of this.allFixedPositionsList) {
+
+                if (row === position.row && layer === position.layer && positionInRow === position.positionInRow) {
+                    if (position.isUsed) {
+                        console.log(position);
+                        //console.log("Bewegung nicht möglich");
+                        return true;
+                    }
+                }
+            }
+            //console.log("Bewegung möglich");
+            return false;
+        }
+
 
         public isPositionInGrid(fixedPosition: FixedPosition): boolean {
             if (fixedPosition.positionInRow >= this.edgeSizeForDimension || fixedPosition.row >= this.edgeSizeForDimension || fixedPosition.layer >= this.edgeSizeForDimension) {
@@ -55,6 +69,7 @@ namespace FudgecraftGame {
             }
         }
 
+
         public makeSelectedPositionEmpty(fixedPosition: FixedPosition): void {
             let positionInRow: number = fixedPosition.positionInRow;
             let row: number = fixedPosition.row;
@@ -65,6 +80,32 @@ namespace FudgecraftGame {
                 if (c.positionInRow === positionInRow && c.row === row && c.layer === layer) {
                     c.isUsed = false;
                     c.cubeInPosition = null;
+                }
+            }
+        }
+
+        public makeSelectedPositionUnused(fixedPosition: FixedPosition): void {
+            let positionInRow: number = fixedPosition.positionInRow;
+            let row: number = fixedPosition.row;
+            let layer: number = fixedPosition.layer;
+
+
+            for (let c of this.allFixedPositionsList) {
+                if (c.positionInRow === positionInRow && c.row === row && c.layer === layer) {
+                    c.isUsed = false;
+                }
+            }
+        }
+
+        public makeSelectedPositioUsed(fixedPosition: FixedPosition): void {
+            let positionInRow: number = fixedPosition.positionInRow;
+            let row: number = fixedPosition.row;
+            let layer: number = fixedPosition.layer;
+
+
+            for (let c of this.allFixedPositionsList) {
+                if (c.positionInRow === positionInRow && c.row === row && c.layer === layer) {
+                    c.isUsed = true;
                 }
             }
         }

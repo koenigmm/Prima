@@ -7,61 +7,60 @@ var FudgecraftGame;
             super("Fragmenttyp: " + FudgecraftGame.FRAGMENT_TYPE);
             this.componentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(new ƒ.Vector3(0, 0, 0))); //Platzhalter
             this.listOfCubes = new Array();
-            // Test
-            // this.materialType = CUBE_MATERIAL_TYPE.RED;
-            // this.fragmentType = FRAGMENT_TYPE.STUFEN_REIHE;
             this.setRandomMaterialType();
             this.setRandomFragmentType();
             this.createFragment(allFixedPositions);
             this.addComponent(this.componentTransform);
-            //this.setPosition(new ƒ.Vector3(2, 0, 0));
             console.log(this.listOfCubes);
         }
         move(allFixedPositions, move) {
             // Save Positions
-            let copyOfPosition = new Array();
+            let copyOfFragmentPositions = new Array();
+            let copyOfCubeList = new Array();
             for (const cube of this.listOfCubes) {
-                let value = new FudgecraftGame.FixedPosition(cube.getFixedPosition().row, cube.getFixedPosition().positionInRow, cube.getFixedPosition().layer);
-                copyOfPosition.push(value);
+                let valuePosition = new FudgecraftGame.FixedPosition(cube.getFixedPosition().row, cube.getFixedPosition().positionInRow, cube.getFixedPosition().layer);
+                let valueCube = new FudgecraftGame.Cube(FudgecraftGame.CUBE_MATERIAL_TYPE.TRANSPARENT, valuePosition, allFixedPositions);
+                copyOfFragmentPositions.push(valuePosition);
+                copyOfCubeList.push(valueCube);
             }
             switch (move) {
                 case FudgecraftGame.MOVE.LAYER_UP:
-                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                    if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
                     }
                     break;
                 case FudgecraftGame.MOVE.LAYER_DOWN:
-                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                    if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
                     }
                     break;
                 case FudgecraftGame.MOVE.LEFT:
-                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                    if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
                     }
                     break;
                 case FudgecraftGame.MOVE.RIGHT:
-                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                    if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
                     }
                     break;
                 case FudgecraftGame.MOVE.IN:
-                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                    if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
                     }
                     break;
                 case FudgecraftGame.MOVE.OUT:
-                    if (this.makeTestMove(move, copyOfPosition, allFixedPositions)) {
+                    if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -71,55 +70,72 @@ var FudgecraftGame;
                     console.log("Bewegungstyp nicht erkannt");
             }
         }
-        makeTestMove(move, fixedPositions, allFixedPositions) {
+        makeTestMove(move, copyOfFragmentPositions, allFixedPositions) {
             // Test Move
             let success = false;
+            let pseudoSetupPosition;
+            for (let position of this.listOfCubes) {
+                allFixedPositions.makeSelectedPositionUnused(position.fixedPosition);
+            }
             switch (move) {
                 case FudgecraftGame.MOVE.LAYER_UP:
-                    for (let position of fixedPositions) {
+                    for (let position of copyOfFragmentPositions) {
                         position.layer++;
+                        pseudoSetupPosition = position;
                     }
                     break;
                 case FudgecraftGame.MOVE.LAYER_DOWN:
-                    for (let position of fixedPositions) {
+                    for (let position of copyOfFragmentPositions) {
                         position.layer--;
+                        pseudoSetupPosition = position;
                     }
                     break;
                 case FudgecraftGame.MOVE.LEFT:
-                    for (let position of fixedPositions) {
+                    for (let position of copyOfFragmentPositions) {
                         position.positionInRow--;
+                        pseudoSetupPosition = position;
                     }
                     break;
                 case FudgecraftGame.MOVE.RIGHT:
-                    for (let position of fixedPositions) {
+                    for (let position of copyOfFragmentPositions) {
                         position.positionInRow++;
+                        pseudoSetupPosition = position;
                     }
                     break;
                 case FudgecraftGame.MOVE.IN: {
-                    for (let position of fixedPositions) {
+                    for (let position of copyOfFragmentPositions) {
                         position.row++;
+                        pseudoSetupPosition = position;
                     }
                     break;
                 }
                 case FudgecraftGame.MOVE.OUT: {
-                    for (let position of fixedPositions) {
+                    for (let position of copyOfFragmentPositions) {
                         position.row--;
+                        pseudoSetupPosition = position;
                     }
                     break;
                 }
             }
             // Check
-            for (let cubePosition of fixedPositions) {
-                if (allFixedPositions.isPositionInGrid(cubePosition) && cubePosition.isUsed === false) {
+            for (let fixedPosition of copyOfFragmentPositions) {
+                let row = fixedPosition.row;
+                let positionInRow = fixedPosition.positionInRow;
+                let layer = fixedPosition.layer;
+                console.log(row, layer, positionInRow);
+                if (allFixedPositions.isPositionInGrid(fixedPosition) && allFixedPositions.isPostionUsed(row, layer, positionInRow) == false) {
                     success = true;
                     continue;
                 }
                 else {
-                    console.log("Bewegung nicht möglich");
                     success = false;
                     break;
                 }
             }
+            allFixedPositions.makeSelectedPositioUsed(pseudoSetupPosition);
+            // for (let position of copyOfFragmentPositions) {
+            //     allFixedPositions.makeSelectedPositioUsed(position);
+            // }
             return success;
         }
         createFragment(allFixedPositions) {

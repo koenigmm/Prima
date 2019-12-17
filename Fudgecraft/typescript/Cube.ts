@@ -12,9 +12,9 @@ namespace FudgecraftGame {
     }
 
     export class Cube extends ƒ.Node {
+        public fixedPosition: FixedPosition;
         private mesh: ƒ.MeshCube = new ƒ.MeshCube;
         private material: ƒ.Material;
-        private fixedPosition: FixedPosition;
         private fixedPostionAsVector: ƒ.Vector3;
 
         constructor(cubeMaterialType: CUBE_MATERIAL_TYPE, postion: FixedPosition, allFixedPositions: AllFixedPositions) {
@@ -30,63 +30,37 @@ namespace FudgecraftGame {
             return this.fixedPosition;
         }
 
-        //TODO Einbau einer Überprüfung, ob die Bewegung noch innerhalb des Grids ist. Am besten eigene Methode schreiben.
-        public move(allFixedPositions: AllFixedPositions, move: MOVE): void{
-            let copyOfAcutalPosition: FixedPosition = new FixedPosition(this.fixedPosition.row, this.fixedPosition.positionInRow, this.fixedPosition.layer);
 
+        public move(allFixedPositions: AllFixedPositions, move: MOVE): void {
             switch (move) {
                 case MOVE.LAYER_UP:
-                    copyOfAcutalPosition.layer++;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.layer++;
-                    }
-                    else console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.layer++;
                     break;
 
                 case MOVE.LAYER_DOWN:
-                    copyOfAcutalPosition.layer--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.layer--;
-                    }
-                    else console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.layer--;
                     break;
 
                 case MOVE.LEFT:
-                    copyOfAcutalPosition.positionInRow--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.positionInRow--;
-                    }
-                    else console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.positionInRow--;
                     break;
 
                 case MOVE.RIGHT:
-                    copyOfAcutalPosition.positionInRow++;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.positionInRow++;
-                    }
-                    else console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.positionInRow++;
                     break;
 
                 case MOVE.IN:
-                    copyOfAcutalPosition.row++;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.row++;
-                    }
-                    else console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.row++;
                     break;
 
                 case MOVE.OUT:
-                    copyOfAcutalPosition.row--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.row--;
-                    }
-                    else console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.row--;
                     break;
             }
 
@@ -94,6 +68,7 @@ namespace FudgecraftGame {
             allFixedPositions.setPostion(this.fixedPosition, this);
             this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
         }
+
 
         private createCube(cubeMaterialType: CUBE_MATERIAL_TYPE, allFixedPositions: AllFixedPositions): void {
             this.addComponent(new ƒ.ComponentMesh(this.mesh));

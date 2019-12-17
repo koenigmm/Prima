@@ -24,63 +24,31 @@ var FudgecraftGame;
         getFixedPosition() {
             return this.fixedPosition;
         }
-        //TODO Einbau einer Überprüfung, ob die Bewegung noch innerhalb des Grids ist. Am besten eigene Methode schreiben.
         move(allFixedPositions, move) {
-            let copyOfAcutalPosition = new FudgecraftGame.FixedPosition(this.fixedPosition.row, this.fixedPosition.positionInRow, this.fixedPosition.layer);
             switch (move) {
                 case MOVE.LAYER_UP:
-                    copyOfAcutalPosition.layer++;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.layer++;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.layer++;
                     break;
                 case MOVE.LAYER_DOWN:
-                    copyOfAcutalPosition.layer--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.layer--;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.layer--;
                     break;
                 case MOVE.LEFT:
-                    copyOfAcutalPosition.positionInRow--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.positionInRow--;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.positionInRow--;
                     break;
                 case MOVE.RIGHT:
-                    copyOfAcutalPosition.positionInRow++;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.positionInRow++;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.positionInRow++;
                     break;
                 case MOVE.IN:
-                    copyOfAcutalPosition.row++;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.row++;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.row++;
                     break;
                 case MOVE.OUT:
-                    copyOfAcutalPosition.row--;
-                    if (allFixedPositions.isPositionInGrid(copyOfAcutalPosition)) {
-                        allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
-                        this.fixedPosition.row--;
-                    }
-                    else
-                        console.log("Bewegung nicht möglich class cube");
+                    allFixedPositions.makeSelectedPositionEmpty(this.fixedPosition);
+                    this.fixedPosition.row--;
                     break;
             }
             this.updateFixedPositonAsVector();
