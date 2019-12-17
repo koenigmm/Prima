@@ -2,9 +2,17 @@
 var FudgecraftGame;
 (function (FudgecraftGame) {
     var ƒ = FudgeCore;
+    let VIEW;
+    (function (VIEW) {
+        VIEW["VORNE"] = "vorne";
+        VIEW["HINTEN"] = "hinten";
+        VIEW["LINKS"] = "links";
+        VIEW["RECHTS"] = "rechts";
+    })(VIEW = FudgecraftGame.VIEW || (FudgecraftGame.VIEW = {}));
     class OrbitCamera extends ƒ.Node {
         constructor(distance, backgroundColor, directionalLightColor, ambientLightColor, lightTarget) {
             super("Orbit Camera");
+            this.view = VIEW.VORNE;
             // Camera
             this.cmpCamera = new ƒ.ComponentCamera();
             this.tranform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(new ƒ.Vector3(0, 0, 0)));

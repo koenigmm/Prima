@@ -21,9 +21,9 @@ var FudgecraftGame;
             this.updateFixedPositonAsVector();
             this.createCube(cubeMaterialType, allFixedPositions);
         }
-        getFixedPosition() {
-            return this.fixedPosition;
-        }
+        // public getFixedPosition(): FixedPosition {
+        //     return this.fixedPosition;
+        // }
         move(allFixedPositions, move) {
             switch (move) {
                 case MOVE.LAYER_UP:

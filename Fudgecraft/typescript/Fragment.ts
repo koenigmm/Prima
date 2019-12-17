@@ -22,7 +22,7 @@ namespace FudgecraftGame {
             let copyOfCubeList: Array<Cube> = new Array<Cube>();
 
             for (const cube of this.listOfCubes) {
-                let valuePosition: FixedPosition = new FixedPosition(cube.getFixedPosition().row, cube.getFixedPosition().positionInRow, cube.getFixedPosition().layer);
+                let valuePosition: FixedPosition = new FixedPosition(cube.fixedPosition.row, cube.fixedPosition.positionInRow, cube.fixedPosition.layer);
                 let valueCube: Cube = new Cube(CUBE_MATERIAL_TYPE.TRANSPARENT, valuePosition, allFixedPositions);
                 copyOfFragmentPositions.push(valuePosition);
                 copyOfCubeList.push(valueCube);
@@ -85,45 +85,47 @@ namespace FudgecraftGame {
         private makeTestMove(move: MOVE, copyOfFragmentPositions: Array<FixedPosition>, allFixedPositions: AllFixedPositions): boolean {
             // Test Move
             let success: boolean = false;
-            let pseudoSetupPosition: FixedPosition;
+            let positionBeforeTestMove: Array<FixedPosition> = new Array<FixedPosition>();
 
             for (let position of this.listOfCubes) {
+                // Copy default position
+                let row: number = position.fixedPosition.row;
+                let layer: number = position.fixedPosition.layer;
+                let positionInRow: number = position.fixedPosition.positionInRow;
+                positionBeforeTestMove.push(new FixedPosition(row, positionInRow, layer));
+
                 allFixedPositions.makeSelectedPositionUnused(position.fixedPosition);
             }
 
+            // Maker Move
             switch (move) {
                 case MOVE.LAYER_UP:
                     for (let position of copyOfFragmentPositions) {
                         position.layer++;
-                        pseudoSetupPosition = position;
                     }
                     break;
 
                 case MOVE.LAYER_DOWN:
                     for (let position of copyOfFragmentPositions) {
                         position.layer--;
-                        pseudoSetupPosition = position;
                     }
                     break;
 
                 case MOVE.LEFT:
                     for (let position of copyOfFragmentPositions) {
                         position.positionInRow--;
-                        pseudoSetupPosition = position;
                     }
                     break;
 
                 case MOVE.RIGHT:
                     for (let position of copyOfFragmentPositions) {
                         position.positionInRow++;
-                        pseudoSetupPosition = position;
                     }
                     break;
 
                 case MOVE.IN: {
                     for (let position of copyOfFragmentPositions) {
                         position.row++;
-                        pseudoSetupPosition = position;
                     }
                     break;
                 }
@@ -131,7 +133,6 @@ namespace FudgecraftGame {
                 case MOVE.OUT: {
                     for (let position of copyOfFragmentPositions) {
                         position.row--;
-                        pseudoSetupPosition = position;
                     }
                     break;
                 }
@@ -153,10 +154,53 @@ namespace FudgecraftGame {
                     break;
                 }
             }
-            allFixedPositions.makeSelectedPositioUsed(pseudoSetupPosition);
-            // for (let position of copyOfFragmentPositions) {
-            //     allFixedPositions.makeSelectedPositioUsed(position);
-            // }
+
+            // Reverse Move
+            switch (move) {
+                case MOVE.LAYER_UP:
+                    for (let position of copyOfFragmentPositions) {
+                        position.layer--;
+                    }
+                    break;
+
+                case MOVE.LAYER_DOWN:
+                    for (let position of copyOfFragmentPositions) {
+                        position.layer++;
+                    }
+                    break;
+
+                case MOVE.LEFT:
+                    for (let position of copyOfFragmentPositions) {
+                        position.positionInRow++;
+                    }
+                    break;
+
+                case MOVE.RIGHT:
+                    for (let position of copyOfFragmentPositions) {
+                        position.positionInRow--;
+                    }
+                    break;
+
+                case MOVE.IN: {
+                    for (let position of copyOfFragmentPositions) {
+                        position.row--;
+                    }
+                    break;
+                }
+
+                case MOVE.OUT: {
+                    for (let position of copyOfFragmentPositions) {
+                        position.row++;
+                    }
+                    break;
+                }
+
+            }
+
+            //allFixedPositions.makeSelectedPositioUsed(pseudoSetupPosition);
+            for (let position of positionBeforeTestMove) {
+                allFixedPositions.makeSelectedPositioUsed(position);
+            }
             return success;
         }
 

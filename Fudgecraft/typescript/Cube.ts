@@ -26,9 +26,9 @@ namespace FudgecraftGame {
 
         }
 
-        public getFixedPosition(): FixedPosition {
-            return this.fixedPosition;
-        }
+        // public getFixedPosition(): FixedPosition {
+        //     return this.fixedPosition;
+        // }
 
 
         public move(allFixedPositions: AllFixedPositions, move: MOVE): void {

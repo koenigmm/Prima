@@ -9,12 +9,14 @@ namespace FudgecraftGame {
     let edgeSize: number = 10;
     //let halfOfEdge: number = (edgeSize / 2) - 1;
     let allFixedPositions: AllFixedPositions = new AllFixedPositions(edgeSize);
-    let fragmentToControl: Fragment = new Fragment(allFixedPositions);
+    let fragmentToControl: Fragment;
     let ankerPositionCenter: FixedPosition = new FixedPosition(0, 0, edgeSize - 1);
     let ankerCube: Cube = new Cube(CUBE_MATERIAL_TYPE.GREY, ankerPositionCenter, allFixedPositions);
 
     function hndload(_event: Event): void {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
+        fragmentToControl = new Fragment(allFixedPositions);
+        document.getElementById("view").innerHTML = orbitCamera.view;
         ƒ.RenderManager.initialize(true);
         gameNode.appendChild(fragmentToControl);
         
@@ -27,7 +29,6 @@ namespace FudgecraftGame {
         viewport.draw();
         console.log("Hallo");
     }
-
 
     function controlFragment(_event: KeyboardEvent): void {
         switch (_event.code) {
@@ -57,20 +58,31 @@ namespace FudgecraftGame {
                 break;
             case ƒ.KEYBOARD_CODE.ONE:
                 orbitCamera.rotate(0);
+                orbitCamera.view = VIEW.VORNE;
                 viewport.draw();
                 break;
             case ƒ.KEYBOARD_CODE.TWO:
                 orbitCamera.rotate(90);
+                orbitCamera.view = VIEW.RECHTS;
                 viewport.draw();
                 break;
             case ƒ.KEYBOARD_CODE.THREE:
                 orbitCamera.rotate(180);
+                orbitCamera.view = VIEW.HINTEN;
+                document.getElementById("view").innerText = orbitCamera.view;
                 viewport.draw();
                 break;
             case ƒ.KEYBOARD_CODE.FOUR:
                 orbitCamera.rotate(270);
+                orbitCamera.view = VIEW.LINKS;
+                viewport.draw();
+                break;
+            case ƒ.KEYBOARD_CODE.T:
+                fragmentToControl = new Fragment(allFixedPositions);
+                gameNode.appendChild(fragmentToControl);
                 viewport.draw();
                 break;
         }
+        document.getElementById("view").innerText = orbitCamera.view;
     }
 }

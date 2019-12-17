@@ -9,11 +9,13 @@ var FudgecraftGame;
     let edgeSize = 10;
     //let halfOfEdge: number = (edgeSize / 2) - 1;
     let allFixedPositions = new FudgecraftGame.AllFixedPositions(edgeSize);
-    let fragmentToControl = new FudgecraftGame.Fragment(allFixedPositions);
+    let fragmentToControl;
     let ankerPositionCenter = new FudgecraftGame.FixedPosition(0, 0, edgeSize - 1);
     let ankerCube = new FudgecraftGame.Cube(FudgecraftGame.CUBE_MATERIAL_TYPE.GREY, ankerPositionCenter, allFixedPositions);
     function hndload(_event) {
         const canvas = document.querySelector("canvas");
+        fragmentToControl = new FudgecraftGame.Fragment(allFixedPositions);
+        document.getElementById("view").innerHTML = orbitCamera.view;
         ƒ.RenderManager.initialize(true);
         gameNode.appendChild(fragmentToControl);
         gameNode.appendChild(orbitCamera);
@@ -51,21 +53,32 @@ var FudgecraftGame;
                 break;
             case ƒ.KEYBOARD_CODE.ONE:
                 orbitCamera.rotate(0);
+                orbitCamera.view = FudgecraftGame.VIEW.VORNE;
                 viewport.draw();
                 break;
             case ƒ.KEYBOARD_CODE.TWO:
                 orbitCamera.rotate(90);
+                orbitCamera.view = FudgecraftGame.VIEW.RECHTS;
                 viewport.draw();
                 break;
             case ƒ.KEYBOARD_CODE.THREE:
                 orbitCamera.rotate(180);
+                orbitCamera.view = FudgecraftGame.VIEW.HINTEN;
+                document.getElementById("view").innerText = orbitCamera.view;
                 viewport.draw();
                 break;
             case ƒ.KEYBOARD_CODE.FOUR:
                 orbitCamera.rotate(270);
+                orbitCamera.view = FudgecraftGame.VIEW.LINKS;
+                viewport.draw();
+                break;
+            case ƒ.KEYBOARD_CODE.T:
+                fragmentToControl = new FudgecraftGame.Fragment(allFixedPositions);
+                gameNode.appendChild(fragmentToControl);
                 viewport.draw();
                 break;
         }
+        document.getElementById("view").innerText = orbitCamera.view;
     }
 })(FudgecraftGame || (FudgecraftGame = {}));
 //# sourceMappingURL=Main.js.map

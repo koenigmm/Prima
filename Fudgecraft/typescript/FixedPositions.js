@@ -5,7 +5,6 @@ var FudgecraftGame;
     class FixedPosition {
         constructor(row, positionInRow, layer) {
             this.isUsed = false;
-            //this.id = id;
             this.positionInRow = positionInRow;
             this.row = row;
             this.layer = layer;
@@ -16,19 +15,15 @@ var FudgecraftGame;
         constructor(edgeSizeForDimension) {
             this.edgeSizeForDimension = edgeSizeForDimension;
             this.allFixedPositionsList = this.createEmptyFixedPositions();
-            console.log(this.allFixedPositionsList);
         }
         isPostionUsed(row, layer, positionInRow) {
             for (let position of this.allFixedPositionsList) {
                 if (row === position.row && layer === position.layer && positionInRow === position.positionInRow) {
                     if (position.isUsed) {
-                        console.log(position);
-                        //console.log("Bewegung nicht möglich");
                         return true;
                     }
                 }
             }
-            //console.log("Bewegung möglich");
             return false;
         }
         isPositionInGrid(fixedPosition) {

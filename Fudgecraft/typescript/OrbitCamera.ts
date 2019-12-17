@@ -1,7 +1,15 @@
 namespace FudgecraftGame {
     import ƒ = FudgeCore;
 
+    export enum VIEW {
+        VORNE = "vorne",
+        HINTEN = "hinten",
+        LINKS = "links",
+        RECHTS = "rechts"
+    }
+
     export class OrbitCamera extends ƒ.Node {
+        public view: VIEW = VIEW.VORNE;
         // Camera
         private cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         private distance: number;

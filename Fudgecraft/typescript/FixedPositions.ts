@@ -2,7 +2,6 @@ namespace FudgecraftGame {
     import ƒ = FudgeCore;
 
     export class FixedPosition {
-        //public id: number;
         public positionInRow: number;
         public row: number;
         public layer: number;
@@ -11,7 +10,6 @@ namespace FudgecraftGame {
         public fixedPosition: ƒ.Vector3;
 
         constructor(row: number, positionInRow: number, layer: number) {
-            //this.id = id;
             this.positionInRow = positionInRow;
             this.row = row;
             this.layer = layer;
@@ -25,7 +23,6 @@ namespace FudgecraftGame {
         constructor(edgeSizeForDimension: number) {
             this.edgeSizeForDimension = edgeSizeForDimension;
             this.allFixedPositionsList = this.createEmptyFixedPositions();
-            console.log(this.allFixedPositionsList);
         }
 
 
@@ -34,13 +31,10 @@ namespace FudgecraftGame {
 
                 if (row === position.row && layer === position.layer && positionInRow === position.positionInRow) {
                     if (position.isUsed) {
-                        console.log(position);
-                        //console.log("Bewegung nicht möglich");
                         return true;
                     }
                 }
             }
-            //console.log("Bewegung möglich");
             return false;
         }
 
