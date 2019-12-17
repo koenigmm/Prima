@@ -27,7 +27,7 @@ namespace FudgecraftGame {
                 copyOfFragmentPositions.push(valuePosition);
                 copyOfCubeList.push(valueCube);
             }
-            
+
             switch (move) {
                 case MOVE.LAYER_UP:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {

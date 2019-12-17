@@ -51,7 +51,7 @@ namespace FudgecraftGame {
 
         public rotate(angle: number): void {
             this.getComponent(ƒ.ComponentTransform).local.rotation = new ƒ.Vector3(-20, angle, 0);
-        } 
+        }
 
     }
 

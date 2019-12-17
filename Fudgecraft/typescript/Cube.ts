@@ -20,16 +20,10 @@ namespace FudgecraftGame {
         constructor(cubeMaterialType: CUBE_MATERIAL_TYPE, postion: FixedPosition, allFixedPositions: AllFixedPositions) {
             super("cube");
             this.fixedPosition = postion;
-            //this.fixedPostionAsVector = new ƒ.Vector3(this.fixedPosition.positionInRow, this.fixedPosition.layer, this.fixedPosition.row);
             this.updateFixedPositonAsVector();
             this.createCube(cubeMaterialType, allFixedPositions);
 
         }
-
-        // public getFixedPosition(): FixedPosition {
-        //     return this.fixedPosition;
-        // }
-
 
         public move(allFixedPositions: AllFixedPositions, move: MOVE): void {
             switch (move) {

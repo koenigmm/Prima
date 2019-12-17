@@ -17,13 +17,9 @@ var FudgecraftGame;
             super("cube");
             this.mesh = new ƒ.MeshCube;
             this.fixedPosition = postion;
-            //this.fixedPostionAsVector = new ƒ.Vector3(this.fixedPosition.positionInRow, this.fixedPosition.layer, this.fixedPosition.row);
             this.updateFixedPositonAsVector();
             this.createCube(cubeMaterialType, allFixedPositions);
         }
-        // public getFixedPosition(): FixedPosition {
-        //     return this.fixedPosition;
-        // }
         move(allFixedPositions, move) {
             switch (move) {
                 case MOVE.LAYER_UP:

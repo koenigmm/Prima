@@ -6,5 +6,6 @@
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
-.vscode
+vscode
+.vscode copy
 node_modules

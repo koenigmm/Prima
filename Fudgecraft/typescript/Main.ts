@@ -7,7 +7,6 @@ namespace FudgecraftGame {
     let orbitCamera: OrbitCamera = new OrbitCamera(30, ƒ.Color.WHITE, ƒ.Color.WHITE, ƒ.Color.GREY, new ƒ.Vector3(0.5, 1, 0.8));
     let gameNode: ƒ.Node = new ƒ.Node("GameNode");
     let edgeSize: number = 10;
-    //let halfOfEdge: number = (edgeSize / 2) - 1;
     let allFixedPositions: AllFixedPositions = new AllFixedPositions(edgeSize);
     let fragmentToControl: Fragment;
     let ankerPositionCenter: FixedPosition = new FixedPosition(0, 0, edgeSize - 1);
@@ -19,7 +18,7 @@ namespace FudgecraftGame {
         document.getElementById("view").innerHTML = orbitCamera.view;
         ƒ.RenderManager.initialize(true);
         gameNode.appendChild(fragmentToControl);
-        
+
         gameNode.appendChild(orbitCamera);
         gameNode.appendChild(ankerCube);
 

@@ -7,7 +7,6 @@ var FudgecraftGame;
     let orbitCamera = new FudgecraftGame.OrbitCamera(30, ƒ.Color.WHITE, ƒ.Color.WHITE, ƒ.Color.GREY, new ƒ.Vector3(0.5, 1, 0.8));
     let gameNode = new ƒ.Node("GameNode");
     let edgeSize = 10;
-    //let halfOfEdge: number = (edgeSize / 2) - 1;
     let allFixedPositions = new FudgecraftGame.AllFixedPositions(edgeSize);
     let fragmentToControl;
     let ankerPositionCenter = new FudgecraftGame.FixedPosition(0, 0, edgeSize - 1);
