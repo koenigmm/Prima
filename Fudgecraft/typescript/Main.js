@@ -2,6 +2,7 @@
 var FudgecraftGame;
 (function (FudgecraftGame) {
     var ƒ = FudgeCore;
+    FudgecraftGame.comboCounter = 0;
     window.addEventListener("load", hndload);
     let viewport = new ƒ.Viewport();
     let orbitCamera = new FudgecraftGame.OrbitCamera(30, ƒ.Color.WHITE, ƒ.Color.WHITE, ƒ.Color.GREY, new ƒ.Vector3(0.5, 1, 0.8));
@@ -15,6 +16,7 @@ var FudgecraftGame;
         const canvas = document.querySelector("canvas");
         fragmentToControl = new FudgecraftGame.Fragment(allFixedPositions);
         document.getElementById("view").innerHTML = orbitCamera.view;
+        document.getElementById("combocounter").innerText = FudgecraftGame.comboCounter.toString();
         ƒ.RenderManager.initialize(true);
         gameNode.appendChild(fragmentToControl);
         gameNode.appendChild(orbitCamera);
@@ -22,7 +24,7 @@ var FudgecraftGame;
         window.addEventListener("keydown", controlFragment);
         viewport.initialize("Viewport", gameNode, orbitCamera.cameraComponent, canvas);
         viewport.draw();
-        console.log("Hallo");
+        //console.log("Hallo");
     }
     function controlFragment(_event) {
         switch (_event.code) {

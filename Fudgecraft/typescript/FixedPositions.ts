@@ -25,8 +25,53 @@ namespace FudgecraftGame {
             this.allFixedPositionsList = this.createEmptyFixedPositions();
         }
 
+        public detectComboInRow(rowToCheck: number, layerToCheck: number, amountOfCubesForCombo: number): boolean {
+            let counter: number = 0;
+            let cubesInRow: Array<Cube> = this.getAllCubesInRow(rowToCheck, layerToCheck);
+            let firstCubeToCompare: Cube = cubesInRow[0];
+            for (let cube of cubesInRow) {
+                if (cube != null && cube != undefined) {
+                    if (cube.material.name === firstCubeToCompare.material.name) {
+                        counter++;
+                        firstCubeToCompare = cube;
+                    }
+                    else counter = 0;
+                }
 
-        public isPostionUsed(row: number, layer: number, positionInRow: number): boolean {
+                if (counter == amountOfCubesForCombo) {
+                    console.log(true);
+                    return true;
+                }
+            }
+            console.log(false);
+            return false;
+        }
+
+
+        public  detectComboInVerticalRow(positionInRow: number, rowToCheck: number, amountOfCubesForCombo: number): boolean {
+            let counter: number = 0;
+            let cubesInVerticalRow: Array<Cube> = this.getAllCubesInVerticalRow(rowToCheck, positionInRow);
+            let firstCubeToCompare: Cube = cubesInVerticalRow[0];
+            for (let cube of cubesInVerticalRow) {
+                if (cube != null && cube != undefined) {
+                    if (cube.material.name === firstCubeToCompare.material.name) {
+                        counter++;
+                        firstCubeToCompare = cube;
+                    }
+                    else counter = 0;
+                }
+                if (counter == amountOfCubesForCombo) {
+                    console.log(true);
+                    return true;
+                }
+            }
+
+            console.log(false);
+            return false;
+        }
+
+
+        public isPositionUsed(row: number, layer: number, positionInRow: number): boolean {
             for (let position of this.allFixedPositionsList) {
 
                 if (row === position.row && layer === position.layer && positionInRow === position.positionInRow) {
@@ -49,7 +94,7 @@ namespace FudgecraftGame {
             else return true;
         }
 
-        public setPostion(fixedPosition: FixedPosition, cubeToSet: Cube): void {
+        public setPosition(fixedPosition: FixedPosition, cubeToSet: Cube): void {
             let positionInRow: number = fixedPosition.positionInRow;
             let row: number = fixedPosition.row;
             let layer: number = fixedPosition.layer;
@@ -102,6 +147,30 @@ namespace FudgecraftGame {
                     c.isUsed = true;
                 }
             }
+        }
+
+        private getAllCubesInRow(row: number, layer: number): Array<Cube> {
+            let listOfCubes: Array<Cube> = new Array<Cube>();
+            for (let position of this.allFixedPositionsList) {
+                if (position.cubeInPosition != undefined) {
+                    if (position.layer == layer && position.row == row) {
+                        listOfCubes.push(position.cubeInPosition);
+                    }
+                }
+            }
+            return listOfCubes;
+        }
+
+        private getAllCubesInVerticalRow(row: number, positionInRow: number): Array<Cube> {
+            let listOfCubes: Array<Cube> = new Array<Cube>();
+            for (let position of this.allFixedPositionsList) {
+                if (position.cubeInPosition != undefined) {
+                    if (position.row == row && position.positionInRow == positionInRow) {
+                        listOfCubes.push(position.cubeInPosition);
+                    }
+                }
+            }
+            return listOfCubes;
         }
 
         private createEmptyFixedPositions(): Array<FixedPosition> {

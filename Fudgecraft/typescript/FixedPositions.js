@@ -16,7 +16,49 @@ var FudgecraftGame;
             this.edgeSizeForDimension = edgeSizeForDimension;
             this.allFixedPositionsList = this.createEmptyFixedPositions();
         }
-        isPostionUsed(row, layer, positionInRow) {
+        detectComboInRow(rowToCheck, layerToCheck, amountOfCubesForCombo) {
+            let counter = 0;
+            let cubesInRow = this.getAllCubesInRow(rowToCheck, layerToCheck);
+            let firstCubeToCompare = cubesInRow[0];
+            for (let cube of cubesInRow) {
+                if (cube != null && cube != undefined) {
+                    if (cube.material.name === firstCubeToCompare.material.name) {
+                        counter++;
+                        firstCubeToCompare = cube;
+                    }
+                    else
+                        counter = 0;
+                }
+                if (counter == amountOfCubesForCombo) {
+                    console.log(true);
+                    return true;
+                }
+            }
+            console.log(false);
+            return false;
+        }
+        detectComboInVerticalRow(positionInRow, rowToCheck, amountOfCubesForCombo) {
+            let counter = 0;
+            let cubesInVerticalRow = this.getAllCubesInVerticalRow(rowToCheck, positionInRow);
+            let firstCubeToCompare = cubesInVerticalRow[0];
+            for (let cube of cubesInVerticalRow) {
+                if (cube != null && cube != undefined) {
+                    if (cube.material.name === firstCubeToCompare.material.name) {
+                        counter++;
+                        firstCubeToCompare = cube;
+                    }
+                    else
+                        counter = 0;
+                }
+                if (counter == amountOfCubesForCombo) {
+                    console.log(true);
+                    return true;
+                }
+            }
+            console.log(false);
+            return false;
+        }
+        isPositionUsed(row, layer, positionInRow) {
             for (let position of this.allFixedPositionsList) {
                 if (row === position.row && layer === position.layer && positionInRow === position.positionInRow) {
                     if (position.isUsed) {
@@ -36,7 +78,7 @@ var FudgecraftGame;
             else
                 return true;
         }
-        setPostion(fixedPosition, cubeToSet) {
+        setPosition(fixedPosition, cubeToSet) {
             let positionInRow = fixedPosition.positionInRow;
             let row = fixedPosition.row;
             let layer = fixedPosition.layer;
@@ -77,6 +119,28 @@ var FudgecraftGame;
                     c.isUsed = true;
                 }
             }
+        }
+        getAllCubesInRow(row, layer) {
+            let listOfCubes = new Array();
+            for (let position of this.allFixedPositionsList) {
+                if (position.cubeInPosition != undefined) {
+                    if (position.layer == layer && position.row == row) {
+                        listOfCubes.push(position.cubeInPosition);
+                    }
+                }
+            }
+            return listOfCubes;
+        }
+        getAllCubesInVerticalRow(row, positionInRow) {
+            let listOfCubes = new Array();
+            for (let position of this.allFixedPositionsList) {
+                if (position.cubeInPosition != undefined) {
+                    if (position.row == row && position.positionInRow == positionInRow) {
+                        listOfCubes.push(position.cubeInPosition);
+                    }
+                }
+            }
+            return listOfCubes;
         }
         createEmptyFixedPositions() {
             let emptyGrid = new Array();

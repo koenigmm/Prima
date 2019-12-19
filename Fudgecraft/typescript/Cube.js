@@ -20,6 +20,12 @@ var FudgecraftGame;
             this.updateFixedPositonAsVector();
             this.createCube(cubeMaterialType, allFixedPositions);
         }
+        get material() {
+            return this._material;
+        }
+        set material(value) {
+            this._material = value;
+        }
         move(allFixedPositions, move) {
             switch (move) {
                 case MOVE.LAYER_UP:
@@ -48,7 +54,7 @@ var FudgecraftGame;
                     break;
             }
             this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
+            allFixedPositions.setPosition(this.fixedPosition, this);
             this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
         }
         createCube(cubeMaterialType, allFixedPositions) {
@@ -56,7 +62,7 @@ var FudgecraftGame;
             this.setMaterial(cubeMaterialType);
             this.addComponent(new ƒ.ComponentMaterial(this.material));
             this.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector)));
-            allFixedPositions.setPostion(this.fixedPosition, this);
+            allFixedPositions.setPosition(this.fixedPosition, this);
         }
         setMaterial(type) {
             switch (type) {

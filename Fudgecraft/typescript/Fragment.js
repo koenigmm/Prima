@@ -17,6 +17,7 @@ var FudgecraftGame;
             // Save Positions
             let copyOfFragmentPositions = new Array();
             let copyOfCubeList = new Array();
+            let success = false;
             for (const cube of this.listOfCubes) {
                 let valuePosition = new FudgecraftGame.FixedPosition(cube.fixedPosition.row, cube.fixedPosition.positionInRow, cube.fixedPosition.layer);
                 let valueCube = new FudgecraftGame.Cube(FudgecraftGame.CUBE_MATERIAL_TYPE.TRANSPARENT, valuePosition, allFixedPositions);
@@ -26,6 +27,7 @@ var FudgecraftGame;
             switch (move) {
                 case FudgecraftGame.MOVE.LAYER_UP:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -33,6 +35,7 @@ var FudgecraftGame;
                     break;
                 case FudgecraftGame.MOVE.LAYER_DOWN:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -40,6 +43,7 @@ var FudgecraftGame;
                     break;
                 case FudgecraftGame.MOVE.LEFT:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -47,6 +51,7 @@ var FudgecraftGame;
                     break;
                 case FudgecraftGame.MOVE.RIGHT:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -54,6 +59,7 @@ var FudgecraftGame;
                     break;
                 case FudgecraftGame.MOVE.IN:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -61,6 +67,7 @@ var FudgecraftGame;
                     break;
                 case FudgecraftGame.MOVE.OUT:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -68,6 +75,18 @@ var FudgecraftGame;
                     break;
                 default:
                     console.log("Bewegungstyp nicht erkannt");
+            }
+            /*
+            Das ist ist nur ein Testblock
+            Die detectComboMethoden sollten in einer eignen Methode ausgeführt werden
+            Die so erkannten würfel sollten gelöscht werden
+            */
+            if (success) {
+                if (allFixedPositions.detectComboInVerticalRow(4, 0, 3)) {
+                    FudgecraftGame.comboCounter++;
+                    document.getElementById("combocounter").innerText = FudgecraftGame.comboCounter.toString();
+                }
+                //allFixedPositions.detectComboInRow(4, 0, 4);
             }
         }
         makeTestMove(move, copyOfFragmentPositions, allFixedPositions) {
@@ -122,8 +141,8 @@ var FudgecraftGame;
                 let row = fixedPosition.row;
                 let positionInRow = fixedPosition.positionInRow;
                 let layer = fixedPosition.layer;
-                console.log(row, layer, positionInRow);
-                if (allFixedPositions.isPositionInGrid(fixedPosition) && allFixedPositions.isPostionUsed(row, layer, positionInRow) == false) {
+                //console.log(row, layer, positionInRow);
+                if (allFixedPositions.isPositionInGrid(fixedPosition) && allFixedPositions.isPositionUsed(row, layer, positionInRow) == false) {
                     success = true;
                     continue;
                 }

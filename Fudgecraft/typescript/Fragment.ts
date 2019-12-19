@@ -20,6 +20,7 @@ namespace FudgecraftGame {
             // Save Positions
             let copyOfFragmentPositions: Array<FixedPosition> = new Array<FixedPosition>();
             let copyOfCubeList: Array<Cube> = new Array<Cube>();
+            let success: boolean = false;
 
             for (const cube of this.listOfCubes) {
                 let valuePosition: FixedPosition = new FixedPosition(cube.fixedPosition.row, cube.fixedPosition.positionInRow, cube.fixedPosition.layer);
@@ -31,6 +32,7 @@ namespace FudgecraftGame {
             switch (move) {
                 case MOVE.LAYER_UP:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -39,6 +41,7 @@ namespace FudgecraftGame {
 
                 case MOVE.LAYER_DOWN:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -47,6 +50,7 @@ namespace FudgecraftGame {
 
                 case MOVE.LEFT:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -55,6 +59,7 @@ namespace FudgecraftGame {
 
                 case MOVE.RIGHT:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -63,6 +68,7 @@ namespace FudgecraftGame {
 
                 case MOVE.IN:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -71,6 +77,7 @@ namespace FudgecraftGame {
 
                 case MOVE.OUT:
                     if (this.makeTestMove(move, copyOfFragmentPositions, allFixedPositions)) {
+                        success = true;
                         for (let cube of this.listOfCubes) {
                             cube.move(allFixedPositions, move);
                         }
@@ -78,6 +85,18 @@ namespace FudgecraftGame {
                     break;
                 default:
                     console.log("Bewegungstyp nicht erkannt");
+            }
+            /*
+            Das ist ist nur ein Testblock
+            Die detectComboMethoden sollten in einer eignen Methode ausgeführt werden
+            Die so erkannten würfel sollten gelöscht werden 
+            */
+            if (success) {
+                if (allFixedPositions.detectComboInVerticalRow(4, 0, 3)) {
+                    comboCounter++;
+                    document.getElementById("combocounter").innerText = comboCounter.toString();
+                }
+                //allFixedPositions.detectComboInRow(4, 0, 4);
             }
         }
 
@@ -143,9 +162,9 @@ namespace FudgecraftGame {
                 let row: number = fixedPosition.row;
                 let positionInRow: number = fixedPosition.positionInRow;
                 let layer: number = fixedPosition.layer;
-                console.log(row, layer, positionInRow);
+                //console.log(row, layer, positionInRow);
 
-                if (allFixedPositions.isPositionInGrid(fixedPosition) && allFixedPositions.isPostionUsed(row, layer, positionInRow) == false) {
+                if (allFixedPositions.isPositionInGrid(fixedPosition) && allFixedPositions.isPositionUsed(row, layer, positionInRow) == false) {
                     success = true;
                     continue;
                 }

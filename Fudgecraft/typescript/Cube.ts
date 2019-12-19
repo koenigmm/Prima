@@ -14,7 +14,13 @@ namespace FudgecraftGame {
     export class Cube extends ƒ.Node {
         public fixedPosition: FixedPosition;
         private mesh: ƒ.MeshCube = new ƒ.MeshCube;
-        private material: ƒ.Material;
+        private _material: ƒ.Material;
+        public get material(): ƒ.Material {
+            return this._material;
+        }
+        public set material(value: ƒ.Material) {
+            this._material = value;
+        }
         private fixedPostionAsVector: ƒ.Vector3;
 
         constructor(cubeMaterialType: CUBE_MATERIAL_TYPE, postion: FixedPosition, allFixedPositions: AllFixedPositions) {
@@ -59,7 +65,7 @@ namespace FudgecraftGame {
             }
 
             this.updateFixedPositonAsVector();
-            allFixedPositions.setPostion(this.fixedPosition, this);
+            allFixedPositions.setPosition(this.fixedPosition, this);
             this.getComponent(ƒ.ComponentTransform).local = ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector);
         }
 
@@ -69,7 +75,7 @@ namespace FudgecraftGame {
             this.setMaterial(cubeMaterialType);
             this.addComponent(new ƒ.ComponentMaterial(this.material));
             this.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(this.fixedPostionAsVector)));
-            allFixedPositions.setPostion(this.fixedPosition, this);
+            allFixedPositions.setPosition(this.fixedPosition, this);
         }
 
         private setMaterial(type: CUBE_MATERIAL_TYPE): void {

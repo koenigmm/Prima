@@ -1,5 +1,6 @@
 namespace FudgecraftGame {
     import ƒ = FudgeCore;
+    export let comboCounter: number = 0;
 
     window.addEventListener("load", hndload);
 
@@ -16,6 +17,7 @@ namespace FudgecraftGame {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
         fragmentToControl = new Fragment(allFixedPositions);
         document.getElementById("view").innerHTML = orbitCamera.view;
+        document.getElementById("combocounter").innerText = comboCounter.toString();
         ƒ.RenderManager.initialize(true);
         gameNode.appendChild(fragmentToControl);
 
@@ -26,7 +28,7 @@ namespace FudgecraftGame {
 
         viewport.initialize("Viewport", gameNode, orbitCamera.cameraComponent, canvas);
         viewport.draw();
-        console.log("Hallo");
+        //console.log("Hallo");
     }
 
     function controlFragment(_event: KeyboardEvent): void {
